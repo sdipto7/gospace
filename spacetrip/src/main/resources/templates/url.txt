@@ -1,0 +1,89 @@
+SpaceTrip:
+1. Get Requests:
+/api/spacetrip/{id}
+/api/spacetrip/available-trips
+/api/spacecraft/{id}
+/api/spacecraft/all
+
+response-body sample:
+{
+    "Space Craft": {
+        "Name": "Star Voyager",
+        "Manufacturer": "Space X",
+        "Manufacture Date": "2031-03-05",
+        "Crew Capacity": 250,
+        "Passenger Capacity": 1600
+    },
+    "Departure Time": "2033-05-15T06:00:00",
+    "Estimated Arrival Time": "2083-11-12T10:20:00",
+    "Trip Duration": "50 years 5 months 28 days 4 hours 20 minutes 0 seconds",
+    "Ticket Price": 12000000.00,
+    "Total Seats": 1600,
+    "Available Seats": 1600
+}
+
+2. Post Requests:
+/api/spacetrip
+=> request-body sample:
+{
+    "Space Craft": {
+        "ID": 1,
+        "Name": "Star Voyager",
+        "Manufacturer": "Space X",
+        "Manufacture Date": "2031-03-05",
+        "Crew Capacity": 250,
+        "Passenger Capacity": 1600
+    },
+    "Departure Time": "2033-05-15T06:00:00",
+    "Estimated Arrival Time": "2083-11-12T10:20:00",
+    "Ticket Price": 12000000.00,
+    "Total Seats": 1600,
+    "Available Seats": 1600
+}
+
+/api/spacecraft
+=> request-body sample:
+{
+    "Name": "Star Voyager",
+    "Manufacturer": "Space X",
+    "Manufacture Date": "2031-03-05",
+    "Crew Capacity": 250,
+    "Passenger Capacity": 1600
+}
+
+3. Put Requests:
+/api/spacetrip
+=> request-body sample:
+{
+    "ID": 5,
+    "Space Craft": {
+        "ID": 1,
+        "Name": "Star Voyager",
+        "Manufacturer": "Space X",
+        "Manufacture Date": "2031-03-05",
+        "Crew Capacity": 250,
+        "Passenger Capacity": 1600
+    },
+    "Departure Time": "2033-05-15T06:00:00",
+    "Estimated Arrival Time": "2093-11-12T10:20:00",
+    "Ticket Price": 13500000.00,
+    "Total Seats": 2000,
+    "Available Seats": 900,
+    "Version": 4
+}
+
+/api/spacecraft
+=> request-body sample:
+{
+    "ID": 5,
+    "Name": "Star Voyager II",
+    "Manufacturer": "Space X",
+    "Manufacture Date": "2031-03-05",
+    "Crew Capacity": 150,
+    "Passenger Capacity": 1010,
+    "Version": 0
+}
+
+4. Delete Requests:
+/api/spacetrip/{id}
+/api/spacecraft/{id}
