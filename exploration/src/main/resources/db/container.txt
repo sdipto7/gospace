@@ -1,0 +1,1 @@
+docker run --detach --env MYSQL_USER=admin --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 --env MYSQL_DATABASE=exploration_db --name exploration_db_container --publish 3307:3307 mysql:8-oracle

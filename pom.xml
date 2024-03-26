@@ -21,6 +21,7 @@
 
     <modules>
         <module>spacetrip</module>
+        <module>exploration</module>
     </modules>
 
     <properties>
