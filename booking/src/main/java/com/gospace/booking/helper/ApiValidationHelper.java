@@ -1,6 +1,6 @@
-package com.gospace.exploration.helper;
+package com.gospace.booking.helper;
 
-import com.gospace.exploration.dto.ValidationResponseDto;
+import com.gospace.booking.dto.ValidationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;

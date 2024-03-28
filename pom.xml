@@ -22,6 +22,7 @@
     <modules>
         <module>spacetrip</module>
         <module>exploration</module>
+        <module>booking</module>
     </modules>
 
     <properties>

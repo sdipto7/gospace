@@ -1,0 +1,47 @@
+1. Get Requests:
+/api/booking/{id}
+/api/booking?referenceNumber=0a0a-10293-aa
+/api/booking/all
+/api/booking/all/{status}
+
+Response-body sample:
+{
+    "referenceNumber": "1ddf5396-11b2-421a-bd58-e640fa78ed2d",
+    "passengerName": "shahriar rumi dipto",
+    "passengerEmail": "shahriarrumidipto@gmail.com",
+    "passengerPhone": "+8801873308882",
+    "totalSeats": 4,
+    "totalPrice": 48000000,
+    "status": "Processing_Payment"
+}
+
+2. Post Requests:
+/api/booking
+
+Request-body sample:
+{
+    "passengerName": "shahriar rumi dipto",
+    "passengerEmail": "shahriarrumidipto7@gmail.com",
+    "passengerPhone": "+8801873308989",
+    "totalSeats": 4,
+    "totalPrice": 48000000
+}
+
+3. Put Requests:
+/api/booking
+
+Request-body sample:
+{
+    "id": 7,
+    "referenceNumber": "1ddf5396-11b2-421a-bd58-e640fa78ed2d",
+    "passengerName": "shahriar rumi dipto",
+    "passengerEmail": "shahriarrumidipto@gmail.com",
+    "passengerPhone": "+8801873308889",
+    "totalSeats": 4,
+    "totalPrice": 48000000,
+    "status": "Processing_Payment",
+    "version": 2
+}
+
+4.Delete Requests:
+/api/booking/{id}

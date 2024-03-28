@@ -1,4 +1,4 @@
-package com.gospace.exploration.dto;
+package com.gospace.booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
