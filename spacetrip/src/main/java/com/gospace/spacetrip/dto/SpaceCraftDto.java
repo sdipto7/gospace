@@ -1,6 +1,7 @@
 package com.gospace.spacetrip.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
@@ -24,28 +25,24 @@ public class SpaceCraftDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty(value = "ID", access = WRITE_ONLY)
+    @JsonProperty(access = WRITE_ONLY)
     private int id;
 
-    @NotNull
-    @Size(min = 1, max = 255, message = "{valid.spacecraft.name.size}")
-    @JsonProperty("Name")
+    @NotBlank
+    @Size(min = 2, max = 255, message = "{valid.spacecraft.name.size}")
     private String name;
 
-    @JsonProperty("Manufacturer")
+    @NotBlank
     private String manufacturer;
 
     @NotNull
     @Past(message = "{valid.spacecraft.manufacture.date.past}")
-    @JsonProperty("Manufacture Date")
     private LocalDate manufactureDate;
 
-    @JsonProperty("Crew Capacity")
     private int crewCapacity;
 
-    @JsonProperty("Passenger Capacity")
     private int passengerCapacity;
 
-    @JsonProperty(value = "Version", access = WRITE_ONLY)
+    @JsonProperty(access = WRITE_ONLY)
     private int version;
 }

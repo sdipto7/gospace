@@ -1,0 +1,100 @@
+SpaceTrip:
+1. Get Requests:
+/api/spacetrip/{id}
+/api/spacetrip/available-trips
+/api/spacecraft/{id}
+/api/spacecraft/all
+
+response-body sample:
+/api/spacetrip/{id}
+{
+    "spaceCraftDto": {
+        "name": "Star Voyager",
+        "manufacturer": "Space X",
+        "manufactureDate": "2021-03-05",
+        "crewCapacity": 250,
+        "passengerCapacity": 1600
+    },
+    "departureTime": "2033-05-15T06:00:00",
+    "estimatedArrivalTime": "2083-11-12T10:20:00",
+    "tripDuration": "50 years 5 months 28 days 4 hours 20 minutes 0 seconds",
+    "ticketPrice": 12000000.00,
+    "totalSeats": 1600,
+    "availableSeats": 1600
+}
+
+response-body sample:
+/api/spacecraft/{id}
+{
+    "name": "Star Voyager",
+    "manufacturer": "Space X",
+    "manufactureDate": "2021-03-05",
+    "crewCapacity": 250,
+    "passengerCapacity": 1600
+}
+
+2. Post Requests:
+/api/spacetrip
+=> request-body sample:
+{
+    "spaceCraftDto": {
+        "id": 6,
+        "name": "Cosmic Explorer",
+        "manufacturer": "Space X",
+        "manufactureDate": "2022-04-05",
+        "crewCapacity": 250,
+        "passengerCapacity": 1600
+    },
+    "departureTime": "2033-05-15T06:00:00",
+    "estimatedArrivalTime": "2083-11-12T10:20:00",
+    "ticketPrice": 12000000.00,
+    "totalSeats": 1600,
+    "availableSeats": 1600
+}
+
+/api/spacecraft
+=> request-body sample:
+{
+    "name": "Star Voyager II",
+    "manufacturer": "Space X",
+    "manufactureDate": "2021-03-05",
+    "crewCapacity": 250,
+    "passengerCapacity": 1600
+}
+
+3. Put Requests:
+/api/spacetrip
+=> request-body sample:
+{
+    "id": 6,
+    "spaceCraftDto": {
+        "id": 6,
+        "name": "Cosmic Explorer",
+        "manufacturer": "Space X",
+        "manufactureDate": "2022-04-05",
+        "crewCapacity": 250,
+        "passengerCapacity": 1600
+    },
+    "departureTime": "2028-05-15T06:00:00",
+    "estimatedArrivalTime": "2093-11-12T10:20:00",
+    "ticketPrice": 22000000.00,
+    "totalSeats": 1600,
+    "availableSeats": 1200,
+    "version": 1
+}
+
+/api/spacecraft
+=> request-body sample:
+{
+    "id": 6,
+    "name": "Cosmic Explorer",
+    "manufacturer": "Space X",
+    "manufactureDate": "2022-04-05",
+    "crewCapacity": 250,
+    "passengerCapacity": 1600,
+    "version": 2
+}
+
+4. Delete Requests:
+/api/spacetrip/{id}
+/api/spacecraft/{id}

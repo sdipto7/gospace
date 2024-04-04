@@ -17,7 +17,7 @@ import static com.gospace.booking.domain.BookingStatus.CONFIRMED;
 @AllArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Entity
 public class Booking extends Persistent {
 

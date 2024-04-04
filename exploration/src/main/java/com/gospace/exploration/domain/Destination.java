@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(of = "id", callSuper = true)
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Entity
 public class Destination extends Persistent {
 

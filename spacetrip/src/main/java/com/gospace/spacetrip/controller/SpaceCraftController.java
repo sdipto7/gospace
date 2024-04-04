@@ -78,11 +78,13 @@ public class SpaceCraftController {
             return errorResponse;
         }
 
+        log.info("[API:SPACECRAFT:SAVE] Successfully validated SpaceCraft Data, RequestBody: {}", spaceCraftDto);
+
         SpaceCraft spaceCraft = helper.getSpaceCraftFromDto(spaceCraftDto);
 
         service.saveOrUpdate(spaceCraft);
 
-        log.info("[API:SPACECRAFT:SAVE] Successfully processed SpaceCraft save, Response: {}", spaceCraftDto);
+        log.info("[API:SPACECRAFT:SAVE] Successfully processed SpaceCraft save, Response: {}", spaceCraft);
 
         return ResponseEntity
                 .created(ServletUriComponentsBuilder
@@ -106,13 +108,15 @@ public class SpaceCraftController {
             return errorResponse;
         }
 
+        log.info("[API:SPACECRAFT:UPDATE] Successfully validated SpaceCraft Data, RequestBody: {}", spaceCraftDto);
+
         SpaceCraft spaceCraft = service.find(spaceCraftDto.getId());
 
         helper.updateEntityFromDto(spaceCraft, spaceCraftDto);
 
         service.saveOrUpdate(spaceCraft);
 
-        log.info("[API:SPACECRAFT:UPDATE] Successfully processed SpaceCraft update, Response: {}", spaceCraftDto);
+        log.info("[API:SPACECRAFT:UPDATE] Successfully processed SpaceCraft update, Response: {}", spaceCraft);
 
         return ResponseEntity
                 .created(ServletUriComponentsBuilder

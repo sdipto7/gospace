@@ -1,12 +1,9 @@
 package com.gospace.spacetrip.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -19,10 +16,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
+@ToString(callSuper = true)
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Entity
 public class SpaceTrip extends Persistent {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

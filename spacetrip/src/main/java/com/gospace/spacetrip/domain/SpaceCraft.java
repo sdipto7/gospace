@@ -3,6 +3,7 @@ package com.gospace.spacetrip.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
 import java.time.LocalDate;
 
 /**
@@ -14,10 +15,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
+@ToString(callSuper = true)
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Entity
 public class SpaceCraft extends Persistent {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

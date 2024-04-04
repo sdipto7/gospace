@@ -27,59 +27,49 @@ public class DestinationDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty(value = "ID", access = WRITE_ONLY)
+    @JsonProperty(access = WRITE_ONLY)
     private int id;
 
     @NotBlank(message = "{valid.destination.name.notBlank}")
-    @Size(min = 1, max = 256, message = "{valid.destination.name.size}")
-    @JsonProperty("Name")
+    @Size(min = 2, max = 256, message = "{valid.destination.name.size}")
     private String name;
 
-    @JsonProperty("Celestial Body Type")
+    @NotBlank
     private String celestialBodyType;
 
     @Size(max = 2048)
-    @JsonProperty("Description")
     private String description;
 
     @Size(max = 2048)
-    @JsonProperty("Surface Features")
     private String surfaceFeatures;
 
     @Size(max = 2048)
-    @JsonProperty("Atmosphere")
     private String atmosphere;
 
     @Digits(integer = 60, fraction = 30)
     @DecimalMin("0")
-    @JsonProperty("Distance From Earth(Astronomical Unit)")
     private BigDecimal distanceFromEarth;
 
     @Digits(integer = 60, fraction = 10)
     @DecimalMin("0")
-    @JsonProperty("Diameter(Km)")
     private BigDecimal diameter;
 
     @Digits(integer = 60, fraction = 10)
     @DecimalMin("0")
-    @JsonProperty("Mass(Kg)")
     private BigDecimal mass;
 
     @Digits(integer = 19, fraction = 10)
     @DecimalMin("0")
-    @JsonProperty("Gravity(ms^-2)")
     private BigDecimal gravity;
 
     @Digits(integer = 10, fraction = 2)
     @DecimalMin("-273.15")
-    @JsonProperty("Minimum Temperature(Celsius)")
     private BigDecimal minimumTemperature;
 
     @Digits(integer = 10, fraction = 2)
     @DecimalMin("-273.15")
-    @JsonProperty("Maximum Temperature(Celsius)")
     private BigDecimal maximumTemperature;
 
-    @JsonProperty(value = "Version", access = WRITE_ONLY)
+    @JsonProperty(access = WRITE_ONLY)
     private int version;
 }

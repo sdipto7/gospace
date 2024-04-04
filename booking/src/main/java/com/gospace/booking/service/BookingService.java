@@ -27,7 +27,7 @@ public class BookingService {
     }
 
     public Booking findByReferenceNumber(String referenceNumber) {
-        Optional<Booking> optionalBooking = repository.findByReferenceNumber(referenceNumber);
+        Optional<Booking> optionalBooking = repository.findByReferenceNumberIgnoreCase(referenceNumber);
 
         return optionalBooking.isPresent() ? optionalBooking.get() : null;
     }

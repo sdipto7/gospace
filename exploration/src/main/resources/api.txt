@@ -1,0 +1,56 @@
+1. Get Requests:
+/api/destination/{id}
+/api/destination/all
+/api/destination/all/{type}
+
+response-body sample:
+{
+    "name": "Mars",
+    "celestialBodyType": "Planet",
+    "description": "Description of planet Mars",
+    "surfaceFeatures": "Surface Features of planet Mars",
+    "atmosphere": "Atmosphere composition of Mars",
+    "distanceFromEarth": 2.114114,
+    "diameter": 6779,
+    "mass": 6.39E+23,
+    "gravity": 3.71,
+    "minimumTemperature": -153,
+    "maximumTemperature": 2E+1
+}
+[units => distanceFromEarth: astronomical unit, diameter: km, mass: kg, gravity: ms^-2, temperature: celsius]
+
+2. Post Requests:
+/api/destination
+=> request-body sample:
+{
+    "name": "Titan",
+    "celestialBodyType": "Moon",
+    "description": "Description of Titan. It's one of the 82 moons of Planet Saturn",
+    "surfaceFeatures": "Surface Features of Titan",
+    "atmosphere": "Atmosphere composition of Titan",
+    "distanceFromEarth": 8.021504546722,
+    "diameter": 5149.5,
+    "mass": 1.35E+23,
+    "gravity": 1.352,
+    "minimumTemperature": -179.6,
+    "maximumTemperature": -179.6
+}
+
+3. Put Requests:
+/api/destination
+=> request-body sample:
+{
+    "id": 8,
+    "name": "Titan",
+    "celestialBodyType": "Moon",
+    "description": "Description of Titan. It's one of the 82 moons of Planet Saturn",
+    "surfaceFeatures": "Surface Features of Titan",
+    "atmosphere": "Atmosphere composition of Titan",
+    "distanceFromEarth": 8.021504546722,
+    "diameter": 5149.5,
+    "mass": 1.35E+23,
+    "gravity": 1.352,
+    "minimumTemperature": -179.6,
+    "maximumTemperature": -179.6,
+    "version": 1
+}

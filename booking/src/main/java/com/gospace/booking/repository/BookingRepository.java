@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
-    Optional<Booking> findByReferenceNumber(String referenceNumber);
+    Optional<Booking> findByReferenceNumberIgnoreCase(String referenceNumber);
 
     List<Booking> findAllByStatus(BookingStatus status);
 }

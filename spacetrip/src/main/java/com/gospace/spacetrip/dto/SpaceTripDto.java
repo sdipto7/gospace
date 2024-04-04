@@ -25,40 +25,34 @@ public class SpaceTripDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty(value = "ID", access = WRITE_ONLY)
+    @JsonProperty(access = WRITE_ONLY)
     private int id;
 
     @NotNull
     @Valid
-    @JsonProperty("Space Craft")
     private SpaceCraftDto spaceCraftDto;
 
     @NotNull
     @Future
-    @JsonProperty("Departure Time")
     private LocalDateTime departureTime;
 
     @NotNull
     @Future
-    @JsonProperty("Estimated Arrival Time")
     private LocalDateTime estimatedArrivalTime;
 
-    @JsonProperty(value = "Trip Duration", access = READ_ONLY)
+    @JsonProperty(access = READ_ONLY)
     private String tripDuration;
 
-    @DecimalMin(value = "1000000.00")
-    @DecimalMax(value = "1000000000.00")
-    @JsonProperty("Ticket Price")
+    @DecimalMin("0.0")
+    @DecimalMax("1000000000.00")
     private BigDecimal ticketPrice;
 
-    @JsonProperty("Total Seats")
     @Min(value = 1, message = "{valid.spacetrip.total.seats.min}")
     private int totalSeats;
 
-    @JsonProperty("Available Seats")
     @Min(value = 0, message = "{valid.spacetrip.available.seats.min}")
     private int availableSeats;
 
-    @JsonProperty(value = "Version", access = WRITE_ONLY)
+    @JsonProperty(access = WRITE_ONLY)
     private int version;
 }

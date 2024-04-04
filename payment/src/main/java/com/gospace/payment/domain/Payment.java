@@ -19,7 +19,7 @@ import static com.gospace.payment.domain.PaymentStatus.SUCCESSFUL;
 @AllArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Entity
 public class Payment extends Persistent {
 

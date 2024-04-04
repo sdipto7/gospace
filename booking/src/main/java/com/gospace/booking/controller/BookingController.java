@@ -66,7 +66,7 @@ public class BookingController {
         if (isNull(booking)) {
             log.info("[API:BOOKING:SHOW:REFERENCE-NUMBER] Error while processing Booking show with ReferenceNumber: {}", referenceNumber);
 
-            throw new BookingNotFoundException(String.format("Invalid id! No Booking found for the ReferenceNumber: %d", referenceNumber));
+            throw new BookingNotFoundException(String.format("Invalid reference number! No Booking found for the ReferenceNumber: %d", referenceNumber));
         }
 
         return new ResponseEntity<>(helper.getDtoFromBooking(booking), HttpStatus.OK);

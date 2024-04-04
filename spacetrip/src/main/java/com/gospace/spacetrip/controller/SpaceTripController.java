@@ -78,11 +78,13 @@ public class SpaceTripController {
             return errorResponse;
         }
 
+        log.info("[API:SPACETRIP:SAVE] Successfully validated SpaceTrip Data, RequestBody: {}", spaceTripDto);
+
         SpaceTrip spaceTrip = helper.getSpaceTripFromDto(spaceTripDto);
 
         service.saveOrUpdate(spaceTrip);
 
-        log.info("[API:SPACETRIP:SAVE] Successfully processed SpaceTrip save, Response: {}", spaceTripDto);
+        log.info("[API:SPACETRIP:SAVE] Successfully processed SpaceTrip save, Response: {}", spaceTrip);
 
         return ResponseEntity
                 .created(ServletUriComponentsBuilder
@@ -106,13 +108,15 @@ public class SpaceTripController {
             return errorResponse;
         }
 
+        log.info("[API:SPACETRIP:UPDATE] Successfully validated SpaceTrip Data, RequestBody: {}", spaceTripDto);
+
         SpaceTrip spaceTrip = service.find(spaceTripDto.getId());
 
         helper.updateEntityFromDto(spaceTrip, spaceTripDto);
 
         service.saveOrUpdate(spaceTrip);
 
-        log.info("[API:SPACETRIP:UPDATE] Successfully processed SpaceTrip update, Response: {}", spaceTripDto);
+        log.info("[API:SPACETRIP:UPDATE] Successfully processed SpaceTrip update, Response: {}", spaceTrip);
 
         return ResponseEntity
                 .created(ServletUriComponentsBuilder

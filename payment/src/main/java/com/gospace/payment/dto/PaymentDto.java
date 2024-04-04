@@ -2,6 +2,7 @@ package com.gospace.payment.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -31,9 +32,10 @@ public class PaymentDto implements Serializable {
 
     private String referenceNumber;
 
-    @DecimalMin(value = "0.0")
+    @DecimalMin("0.0")
     private BigDecimal amount;
 
+    @NotBlank
     private String method;
 
     private String status;
