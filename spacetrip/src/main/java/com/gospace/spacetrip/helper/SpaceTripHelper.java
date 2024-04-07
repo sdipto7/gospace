@@ -28,6 +28,7 @@ public class SpaceTripHelper {
     public SpaceTripDto getDtoFromSpaceTrip(SpaceTrip spaceTrip) {
 
         return SpaceTripDto.builder()
+                .destinationName(spaceTrip.getDestinationName())
                 .spaceCraftDto(spaceCraftHelper.getDtoFromSpaceCraft(spaceTrip.getSpaceCraft()))
                 .departureTime(spaceTrip.getDepartureTime())
                 .estimatedArrivalTime(spaceTrip.getEstimatedArrivalTime())

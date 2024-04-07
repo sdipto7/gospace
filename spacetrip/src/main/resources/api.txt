@@ -9,19 +9,20 @@ SpaceTrip:
 response-body sample:
 /api/spacetrip/{id}
 {
+    "destinationName": "Titan",
     "spaceCraftDto": {
-        "name": "Star Voyager",
-        "manufacturer": "Space X",
-        "manufactureDate": "2021-03-05",
+        "name": "Galactica Shuttle",
+        "manufacturer": "Sierra Space",
+        "manufactureDate": "2015-06-17",
         "crewCapacity": 250,
-        "passengerCapacity": 1600
+        "passengerCapacity": 1500
     },
-    "departureTime": "2033-05-15T06:00:00",
-    "estimatedArrivalTime": "2083-11-12T10:20:00",
-    "tripDuration": "50 years 5 months 28 days 4 hours 20 minutes 0 seconds",
-    "ticketPrice": 12000000.00,
-    "totalSeats": 1600,
-    "availableSeats": 1600
+    "departureTime": "2028-02-07T06:00:00",
+    "estimatedArrivalTime": "2064-07-26T10:20:00",
+    "tripDuration": "36 years 5 months 19 days 4 hours 20 minutes 0 seconds",
+    "ticketPrice": 9500000.00,
+    "totalSeats": 1500,
+    "availableSeats": 1500
 }
 
 response-body sample:
