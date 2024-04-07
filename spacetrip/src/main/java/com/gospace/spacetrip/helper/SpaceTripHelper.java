@@ -42,6 +42,7 @@ public class SpaceTripHelper {
     public SpaceTrip getSpaceTripFromDto(SpaceTripDto spaceTripDto) {
 
         return SpaceTrip.builder()
+                .destinationId(spaceTripDto.getDestinationId())
                 .spaceCraft(spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId()))
                 .departureTime(spaceTripDto.getDepartureTime())
                 .estimatedArrivalTime(spaceTripDto.getEstimatedArrivalTime())
@@ -73,6 +74,7 @@ public class SpaceTripHelper {
     }
 
     public void updateEntityFromDto(SpaceTrip spaceTrip, SpaceTripDto spaceTripDto) {
+        spaceTrip.setDestinationId(spaceTripDto.getDestinationId());
         spaceTrip.setSpaceCraft(spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId()));
         spaceTrip.setDepartureTime(spaceTripDto.getDepartureTime());
         spaceTrip.setEstimatedArrivalTime(spaceTripDto.getEstimatedArrivalTime());

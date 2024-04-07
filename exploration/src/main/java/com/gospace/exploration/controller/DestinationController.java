@@ -59,6 +59,20 @@ public class DestinationController {
     }
 
     @ResponseBody
+    @GetMapping("/destination/name/{id}")
+    public ResponseEntity<String> getDestinationName(@PathVariable int id) {
+        Destination destination = service.find(id);
+
+        if (isNull(destination)) {
+            log.info("[API:DESTINATION:SHOW-NAME] Error while processing Destination show with ID: {}", id);
+
+            throw new DestinationNotFoundException(String.format("Invalid id! No Destination name found for the id: %d", id));
+        }
+
+        return new ResponseEntity<>(destination.getName(), HttpStatus.OK);
+    }
+
+    @ResponseBody
     @GetMapping("/destination/all")
     public ResponseEntity<List<DestinationDto>> showAll() {
         List<DestinationDto> destinationDtoList = helper.getDtoListFromDestinationList(service.findAll());

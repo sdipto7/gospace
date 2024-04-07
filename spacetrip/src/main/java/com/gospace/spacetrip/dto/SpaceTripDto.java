@@ -28,6 +28,9 @@ public class SpaceTripDto implements Serializable {
     @JsonProperty(access = WRITE_ONLY)
     private int id;
 
+    @JsonProperty(access = WRITE_ONLY)
+    private int destinationId;
+
     @JsonProperty(access = READ_ONLY)
     private String destinationName;
 

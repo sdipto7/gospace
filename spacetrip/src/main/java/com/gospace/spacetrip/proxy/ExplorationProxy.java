@@ -17,4 +17,8 @@ public interface ExplorationProxy {
     @ResponseBody
     @GetMapping("/api/destination/{id}")
     ResponseEntity<DestinationDto> show(@PathVariable int id);
+
+    @ResponseBody
+    @GetMapping("/api/destination/name/{id}")
+    ResponseEntity<String> getDestinationName(@PathVariable int id);
 }

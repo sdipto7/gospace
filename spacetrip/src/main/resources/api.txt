@@ -39,6 +39,7 @@ response-body sample:
 /api/spacetrip
 => request-body sample:
 {
+    "destinationId": 8,
     "spaceCraftDto": {
         "id": 6,
         "name": "Cosmic Explorer",
@@ -68,7 +69,8 @@ response-body sample:
 /api/spacetrip
 => request-body sample:
 {
-    "id": 6,
+    "id": 5,
+    "destinationId": 1,
     "spaceCraftDto": {
         "id": 6,
         "name": "Cosmic Explorer",
@@ -77,12 +79,12 @@ response-body sample:
         "crewCapacity": 250,
         "passengerCapacity": 1600
     },
-    "departureTime": "2028-05-15T06:00:00",
+    "departureTime": "2033-05-15T06:00:00",
     "estimatedArrivalTime": "2093-11-12T10:20:00",
-    "ticketPrice": 22000000.00,
+    "ticketPrice": 9500000.00,
     "totalSeats": 1600,
     "availableSeats": 1200,
-    "version": 1
+    "version": 2
 }
 
 /api/spacecraft

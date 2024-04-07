@@ -110,6 +110,8 @@ public class SpaceTripController {
 
         SpaceTrip spaceTrip = helper.getSpaceTripFromDto(spaceTripDto);
 
+        spaceTrip.setDestinationName(explorationProxy.getDestinationName(spaceTrip.getDestinationId()).getBody());
+
         service.saveOrUpdate(spaceTrip);
 
         log.info("[API:SPACETRIP:SAVE] Successfully processed SpaceTrip save, Response: {}", spaceTrip);
@@ -141,6 +143,8 @@ public class SpaceTripController {
         SpaceTrip spaceTrip = service.find(spaceTripDto.getId());
 
         helper.updateEntityFromDto(spaceTrip, spaceTripDto);
+
+        spaceTrip.setDestinationName(explorationProxy.getDestinationName(spaceTrip.getDestinationId()).getBody());
 
         service.saveOrUpdate(spaceTrip);
 
