@@ -1,6 +1,7 @@
 SpaceTrip:
 1. Get Requests:
 /api/spacetrip/{id}
+/api/spacetrip/details/{id}
 /api/spacetrip/available-trips
 /api/spacecraft/{id}
 /api/spacecraft/all

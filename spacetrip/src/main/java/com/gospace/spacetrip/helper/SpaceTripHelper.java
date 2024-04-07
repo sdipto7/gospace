@@ -1,7 +1,9 @@
 package com.gospace.spacetrip.helper;
 
 import com.gospace.spacetrip.domain.SpaceTrip;
+import com.gospace.spacetrip.dto.SpaceTripDetailsDto;
 import com.gospace.spacetrip.dto.SpaceTripDto;
+import com.gospace.spacetrip.proxy.dto.DestinationDto;
 import com.gospace.spacetrip.service.SpaceCraftService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -53,6 +55,20 @@ public class SpaceTripHelper {
         return availableTripList.stream()
                 .map(spaceTrip -> getDtoFromSpaceTrip(spaceTrip))
                 .collect(toList());
+    }
+
+    public SpaceTripDetailsDto getSpaceTripDetailsDto(SpaceTrip spaceTrip, DestinationDto destinationDto) {
+
+        return SpaceTripDetailsDto.builder()
+                .spaceCraftDto(spaceCraftHelper.getDtoFromSpaceCraft(spaceTrip.getSpaceCraft()))
+                .destinationDto(destinationDto)
+                .departureTime(spaceTrip.getDepartureTime())
+                .estimatedArrivalTime(spaceTrip.getEstimatedArrivalTime())
+                .tripDuration(getFormattedDateTimeDifference(spaceTrip.getDepartureTime(), spaceTrip.getEstimatedArrivalTime()))
+                .ticketPrice(spaceTrip.getTicketPrice())
+                .totalSeats(spaceTrip.getTotalSeats())
+                .availableSeats(spaceTrip.getAvailableSeats())
+                .build();
     }
 
     public void updateEntityFromDto(SpaceTrip spaceTrip, SpaceTripDto spaceTripDto) {

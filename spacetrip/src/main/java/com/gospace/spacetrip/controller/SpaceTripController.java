@@ -1,11 +1,14 @@
 package com.gospace.spacetrip.controller;
 
 import com.gospace.spacetrip.domain.SpaceTrip;
+import com.gospace.spacetrip.dto.SpaceTripDetailsDto;
 import com.gospace.spacetrip.dto.SpaceTripDto;
 import com.gospace.spacetrip.dto.ValidationResponseDto;
 import com.gospace.spacetrip.exception.SpaceTripNotFoundException;
 import com.gospace.spacetrip.helper.ApiValidationHelper;
 import com.gospace.spacetrip.helper.SpaceTripHelper;
+import com.gospace.spacetrip.proxy.ExplorationProxy;
+import com.gospace.spacetrip.proxy.dto.DestinationDto;
 import com.gospace.spacetrip.service.SpaceTripService;
 import com.gospace.spacetrip.validator.SpaceTripValidator;
 import jakarta.validation.Valid;
@@ -40,6 +43,8 @@ public class SpaceTripController {
 
     private final ApiValidationHelper apiValidationHelper;
 
+    private final ExplorationProxy explorationProxy;
+
     private static final Logger log = LoggerFactory.getLogger(SpaceTripController.class);
 
     @ResponseBody
@@ -54,6 +59,29 @@ public class SpaceTripController {
         }
 
         return new ResponseEntity<>(helper.getDtoFromSpaceTrip(spaceTrip), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/spacetrip/details/{id}")
+    public ResponseEntity<SpaceTripDetailsDto> showDetails(@PathVariable int id) {
+        SpaceTrip spaceTrip = service.find(id);
+
+        if (isNull(spaceTrip)) {
+            log.info("[API:SPACETRIP:DETAILS] Error while processing SpaceTrip details with ID: {}", id);
+
+            throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip details found for the id: %d", id));
+        }
+
+        DestinationDto destinationDto = explorationProxy.show(spaceTrip.getDestinationId()).getBody();
+
+        if (isNull(destinationDto)) {
+            log.info("[API:SPACETRIP:DETAILS] Error while processing Destination details with ID: {}" +
+                    " which is associated with SpaceTrip with ID: {}", spaceTrip.getDestinationId(), spaceTrip.getId());
+
+            throw new SpaceTripNotFoundException(String.format("Invalid Destination! No Destination found for the SpaceTrip with id: %d", id));
+        }
+
+        return new ResponseEntity<>(helper.getSpaceTripDetailsDto(spaceTrip, destinationDto), HttpStatus.OK);
     }
 
     @ResponseBody

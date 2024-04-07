@@ -28,6 +28,10 @@ public class SpaceTrip extends Persistent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private int destinationId;
+
+    private String destinationName;
+
     @OneToOne
     private SpaceCraft spaceCraft;
 
