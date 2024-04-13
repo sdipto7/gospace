@@ -55,7 +55,7 @@ public class DestinationController {
             throw new DestinationNotFoundException(String.format("Invalid id! No Destination found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getDtoFromDestination(destination), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getDestinationDto(destination), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -75,7 +75,7 @@ public class DestinationController {
     @ResponseBody
     @GetMapping("/all")
     public ResponseEntity<List<DestinationDto>> showAll() {
-        List<DestinationDto> destinationDtoList = helper.getDtoListFromDestinationList(service.findAll());
+        List<DestinationDto> destinationDtoList = helper.getDestinationDtoList(service.findAll());
 
         return new ResponseEntity<>(destinationDtoList,
                 destinationDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
@@ -86,7 +86,7 @@ public class DestinationController {
     public ResponseEntity<List<DestinationDto>> showAllByType(@PathVariable(name = "type") String celestialBodyType) {
         List<Destination> destinationList = service.findAllByCelestialBodyType(CelestialBodyType.fromLabel(celestialBodyType));
 
-        List<DestinationDto> destinationDtoList = helper.getDtoListFromDestinationList(destinationList);
+        List<DestinationDto> destinationDtoList = helper.getDestinationDtoList(destinationList);
 
         return new ResponseEntity<>(destinationDtoList,
                 destinationDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
@@ -107,9 +107,7 @@ public class DestinationController {
 
         log.info("[API:DESTINATION:SAVE] Successfully validated Destination Data, RequestBody: {}", destinationDto);
 
-        Destination destination = helper.getDestinationFromDto(destinationDto);
-
-        service.saveOrUpdate(destination);
+        Destination destination = service.saveOrUpdate(destinationDto);
 
         log.info("[API:DESTINATION:SAVE] Successfully processed Destination save, Response: {}", destination);
 
@@ -137,11 +135,7 @@ public class DestinationController {
 
         log.info("[API:DESTINATION:UPDATE] Successfully validated Destination Data, RequestBody: {}", destinationDto);
 
-        Destination destination = service.find(destinationDto.getId());
-
-        helper.updateEntityFromDto(destination, destinationDto);
-
-        service.saveOrUpdate(destination);
+        Destination destination = service.saveOrUpdate(destinationDto);
 
         log.info("[API:DESTINATION:UPDATE] Successfully processed Destination update, Response: {}", destination);
 

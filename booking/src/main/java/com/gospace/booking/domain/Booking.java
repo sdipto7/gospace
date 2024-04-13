@@ -14,8 +14,6 @@ import static com.gospace.booking.domain.BookingStatus.CONFIRMED;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Entity

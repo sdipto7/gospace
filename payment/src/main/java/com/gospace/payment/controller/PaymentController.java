@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -52,7 +51,7 @@ public class PaymentController {
             throw new PaymentNotFoundException(String.format("Invalid id! No Payment found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getDtoFromPayment(payment), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getPaymentDto(payment), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -64,11 +63,11 @@ public class PaymentController {
             log.info("[API:PAYMENT:SHOW:REFERENCE-NUMBER] Error while processing Payment show with ReferenceNumber: {}", referenceNumber);
 
             throw new PaymentNotFoundException(
-                    String.format("Invalid reference number! No Payment found for the ReferenceNumber: %d", referenceNumber)
+                    String.format("Invalid reference number! No Payment found for the ReferenceNumber: %s", referenceNumber)
             );
         }
 
-        return new ResponseEntity<>(helper.getDtoFromPayment(payment), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getPaymentDto(payment), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -86,11 +85,7 @@ public class PaymentController {
 
         log.info("[API:PAYMENT:SAVE] Successfully validated Payment Data, RequestBody: {}", paymentDto);
 
-        Payment payment = service.findByReferenceNumber(paymentDto.getReferenceNumber());
-
-        payment = service.save((nonNull(payment) && !payment.isSuccessful())
-                ? payment
-                : helper.getPaymentFromDto(paymentDto));
+        Payment payment = service.save(paymentDto);
 
         log.info("[API:PAYMENT:SAVE] Successfully processed Payment save, Response: {}", payment);
 

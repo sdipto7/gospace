@@ -13,8 +13,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Entity

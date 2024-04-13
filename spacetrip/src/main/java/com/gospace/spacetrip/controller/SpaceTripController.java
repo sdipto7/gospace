@@ -54,7 +54,7 @@ public class SpaceTripController {
             throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getDtoFromSpaceTrip(spaceTrip), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getSpaceTripDto(spaceTrip), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -74,7 +74,7 @@ public class SpaceTripController {
     @ResponseBody
     @GetMapping("/available-trips")
     public ResponseEntity<List<SpaceTripDto>> showAll() {
-        List<SpaceTripDto> availableSpaceTripDtoList = helper.getDtoListFromSpaceTripList(service.findAvailableSpaceTrips());
+        List<SpaceTripDto> availableSpaceTripDtoList = helper.getSpaceTripDtoList(service.findAvailableSpaceTrips());
 
         return new ResponseEntity<>(availableSpaceTripDtoList,
                 availableSpaceTripDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
@@ -95,9 +95,7 @@ public class SpaceTripController {
 
         log.info("[API:SPACETRIP:SAVE] Successfully validated SpaceTrip Data, RequestBody: {}", spaceTripDto);
 
-        SpaceTrip spaceTrip = helper.getSpaceTripFromDto(spaceTripDto);
-
-        service.saveOrUpdate(spaceTrip);
+        SpaceTrip spaceTrip = service.saveOrUpdate(spaceTripDto);
 
         log.info("[API:SPACETRIP:SAVE] Successfully processed SpaceTrip save, Response: {}", spaceTrip);
 
@@ -125,11 +123,7 @@ public class SpaceTripController {
 
         log.info("[API:SPACETRIP:UPDATE] Successfully validated SpaceTrip Data, RequestBody: {}", spaceTripDto);
 
-        SpaceTrip spaceTrip = service.find(spaceTripDto.getId());
-
-        helper.updateEntityFromDto(spaceTrip, spaceTripDto);
-
-        service.saveOrUpdate(spaceTrip);
+        SpaceTrip spaceTrip = service.saveOrUpdate(spaceTripDto);
 
         log.info("[API:SPACETRIP:UPDATE] Successfully processed SpaceTrip update, Response: {}", spaceTrip);
 

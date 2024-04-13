@@ -5,7 +5,6 @@ import com.gospace.spacetrip.dto.SpaceTripDetailsDto;
 import com.gospace.spacetrip.dto.SpaceTripDto;
 import com.gospace.spacetrip.proxy.ExplorationProxy;
 import com.gospace.spacetrip.proxy.dto.DestinationDto;
-import com.gospace.spacetrip.service.SpaceCraftService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,15 +23,13 @@ public class SpaceTripHelper {
 
     private final SpaceCraftHelper spaceCraftHelper;
 
-    private final SpaceCraftService spaceCraftService;
-
     private final ExplorationProxy explorationProxy;
 
-    public SpaceTripDto getDtoFromSpaceTrip(SpaceTrip spaceTrip) {
+    public SpaceTripDto getSpaceTripDto(SpaceTrip spaceTrip) {
 
         return SpaceTripDto.builder()
                 .destinationName(spaceTrip.getDestinationName())
-                .spaceCraftDto(spaceCraftHelper.getDtoFromSpaceCraft(spaceTrip.getSpaceCraft()))
+                .spaceCraftDto(spaceCraftHelper.getSpaceCraftDto(spaceTrip.getSpaceCraft()))
                 .departureTime(spaceTrip.getDepartureTime())
                 .estimatedArrivalTime(spaceTrip.getEstimatedArrivalTime())
                 .tripDuration(getFormattedDateTimeDifference(spaceTrip.getDepartureTime(), spaceTrip.getEstimatedArrivalTime()))
@@ -42,25 +39,10 @@ public class SpaceTripHelper {
                 .build();
     }
 
-    public SpaceTrip getSpaceTripFromDto(SpaceTripDto spaceTripDto) {
-        String destinationName = explorationProxy.getDestinationName(spaceTripDto.getDestinationId()).getBody();
-
-        return SpaceTrip.builder()
-                .destinationId(spaceTripDto.getDestinationId())
-                .destinationName(destinationName)
-                .spaceCraft(spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId()))
-                .departureTime(spaceTripDto.getDepartureTime())
-                .estimatedArrivalTime(spaceTripDto.getEstimatedArrivalTime())
-                .ticketPrice(spaceTripDto.getTicketPrice())
-                .totalSeats(spaceTripDto.getTotalSeats())
-                .availableSeats(spaceTripDto.getAvailableSeats())
-                .build();
-    }
-
-    public List<SpaceTripDto> getDtoListFromSpaceTripList(List<SpaceTrip> availableTripList) {
+    public List<SpaceTripDto> getSpaceTripDtoList(List<SpaceTrip> availableTripList) {
 
         return availableTripList.stream()
-                .map(spaceTrip -> getDtoFromSpaceTrip(spaceTrip))
+                .map(spaceTrip -> getSpaceTripDto(spaceTrip))
                 .collect(toList());
     }
 
@@ -68,7 +50,7 @@ public class SpaceTripHelper {
         DestinationDto destinationDto = explorationProxy.show(spaceTrip.getDestinationId()).getBody();
 
         return SpaceTripDetailsDto.builder()
-                .spaceCraftDto(spaceCraftHelper.getDtoFromSpaceCraft(spaceTrip.getSpaceCraft()))
+                .spaceCraftDto(spaceCraftHelper.getSpaceCraftDto(spaceTrip.getSpaceCraft()))
                 .destinationDto(destinationDto)
                 .departureTime(spaceTrip.getDepartureTime())
                 .estimatedArrivalTime(spaceTrip.getEstimatedArrivalTime())
@@ -77,19 +59,5 @@ public class SpaceTripHelper {
                 .totalSeats(spaceTrip.getTotalSeats())
                 .availableSeats(spaceTrip.getAvailableSeats())
                 .build();
-    }
-
-    public void updateEntityFromDto(SpaceTrip spaceTrip, SpaceTripDto spaceTripDto) {
-        String destinationName = explorationProxy.getDestinationName(spaceTripDto.getDestinationId()).getBody();
-
-        spaceTrip.setDestinationId(spaceTripDto.getDestinationId());
-        spaceTrip.setDestinationName(destinationName);
-        spaceTrip.setSpaceCraft(spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId()));
-        spaceTrip.setDepartureTime(spaceTripDto.getDepartureTime());
-        spaceTrip.setEstimatedArrivalTime(spaceTripDto.getEstimatedArrivalTime());
-        spaceTrip.setTicketPrice(spaceTripDto.getTicketPrice());
-        spaceTrip.setTotalSeats(spaceTripDto.getTotalSeats());
-        spaceTrip.setAvailableSeats(spaceTripDto.getAvailableSeats());
-        spaceTrip.setVersion(spaceTripDto.getVersion());
     }
 }

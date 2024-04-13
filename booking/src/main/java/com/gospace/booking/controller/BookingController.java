@@ -55,7 +55,7 @@ public class BookingController {
             throw new BookingNotFoundException(String.format("Invalid id! No Booking found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getDtoFromBooking(booking), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getBookingDto(booking), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -69,13 +69,13 @@ public class BookingController {
             throw new BookingNotFoundException(String.format("Invalid reference number! No Booking found for the ReferenceNumber: %d", referenceNumber));
         }
 
-        return new ResponseEntity<>(helper.getDtoFromBooking(booking), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getBookingDto(booking), HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping("/all")
     public ResponseEntity<List<BookingDto>> showAll() {
-        List<BookingDto> bookingDtoList = helper.getDtoListFromBookingList(service.findAll());
+        List<BookingDto> bookingDtoList = helper.getBookingDtoList(service.findAll());
 
         return new ResponseEntity<>(bookingDtoList, bookingDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
@@ -85,7 +85,7 @@ public class BookingController {
     public ResponseEntity<List<BookingDto>> showAllByStatus(@PathVariable String status) {
         List<Booking> bookingList = service.findAllByStatus(BookingStatus.fromLabel(status));
 
-        List<BookingDto> bookingDtoList = helper.getDtoListFromBookingList(bookingList);
+        List<BookingDto> bookingDtoList = helper.getBookingDtoList(bookingList);
 
         return new ResponseEntity<>(bookingDtoList, bookingDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
@@ -105,9 +105,7 @@ public class BookingController {
 
         log.info("[API:BOOKING:SAVE] Successfully validated Booking Data, RequestBody: {}", bookingDto);
 
-        Booking booking = helper.getBookingFromDto(bookingDto);
-
-        service.saveOrUpdate(booking);
+        Booking booking = service.saveOrUpdate(bookingDto);
 
         log.info("[API:BOOKING:SAVE] Successfully processed Booking save, Response: {}", booking);
 
@@ -135,11 +133,7 @@ public class BookingController {
 
         log.info("[API:BOOKING:UPDATE] Successfully validated Booking Data, RequestBody: {}", bookingDto);
 
-        Booking booking = service.find(bookingDto.getId());
-
-        helper.updateEntityFromDto(booking, bookingDto);
-
-        service.saveOrUpdate(booking);
+        Booking booking = service.saveOrUpdate(bookingDto);
 
         log.info("[API:BOOKING:UPDATE] Successfully processed Booking update, Response: {}", booking);
 

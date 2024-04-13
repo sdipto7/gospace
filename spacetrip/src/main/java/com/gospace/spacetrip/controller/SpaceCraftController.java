@@ -54,13 +54,13 @@ public class SpaceCraftController {
             throw new SpaceCraftNotFoundException(String.format("Invalid id! No SpaceCraft found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getDtoFromSpaceCraft(spaceCraft), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getSpaceCraftDto(spaceCraft), HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping("/all")
     public ResponseEntity<List<SpaceCraftDto>> showAll() {
-        List<SpaceCraftDto> spaceCraftDtoList = helper.getDtoListFromSpaceCraftList(service.findAll());
+        List<SpaceCraftDto> spaceCraftDtoList = helper.getSpaceCraftDtoList(service.findAll());
 
         return new ResponseEntity<>(spaceCraftDtoList, spaceCraftDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
@@ -80,9 +80,7 @@ public class SpaceCraftController {
 
         log.info("[API:SPACECRAFT:SAVE] Successfully validated SpaceCraft Data, RequestBody: {}", spaceCraftDto);
 
-        SpaceCraft spaceCraft = helper.getSpaceCraftFromDto(spaceCraftDto);
-
-        service.saveOrUpdate(spaceCraft);
+        SpaceCraft spaceCraft = service.saveOrUpdate(spaceCraftDto);
 
         log.info("[API:SPACECRAFT:SAVE] Successfully processed SpaceCraft save, Response: {}", spaceCraft);
 
@@ -110,11 +108,7 @@ public class SpaceCraftController {
 
         log.info("[API:SPACECRAFT:UPDATE] Successfully validated SpaceCraft Data, RequestBody: {}", spaceCraftDto);
 
-        SpaceCraft spaceCraft = service.find(spaceCraftDto.getId());
-
-        helper.updateEntityFromDto(spaceCraft, spaceCraftDto);
-
-        service.saveOrUpdate(spaceCraft);
+        SpaceCraft spaceCraft = service.saveOrUpdate(spaceCraftDto);
 
         log.info("[API:SPACECRAFT:UPDATE] Successfully processed SpaceCraft update, Response: {}", spaceCraft);
 

@@ -2,6 +2,7 @@ package com.gospace.exploration.service;
 
 import com.gospace.exploration.domain.CelestialBodyType;
 import com.gospace.exploration.domain.Destination;
+import com.gospace.exploration.dto.DestinationDto;
 import com.gospace.exploration.repository.DestinationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,21 @@ public class DestinationService {
     }
 
     @Transactional
-    public Destination saveOrUpdate(Destination destination) {
+    public Destination saveOrUpdate(DestinationDto destinationDto) {
+        Destination destination = destinationDto.isNew() ? new Destination() : find(destinationDto.getId());
+
+        destination.setName(destinationDto.getName());
+        destination.setCelestialBodyType(CelestialBodyType.fromLabel(destinationDto.getCelestialBodyType()));
+        destination.setDescription(destinationDto.getDescription());
+        destination.setSurfaceFeatures(destinationDto.getSurfaceFeatures());
+        destination.setAtmosphere(destinationDto.getAtmosphere());
+        destination.setDistanceFromEarth(destinationDto.getDistanceFromEarth());
+        destination.setDiameter(destinationDto.getDiameter());
+        destination.setMass(destinationDto.getMass());
+        destination.setGravity(destinationDto.getGravity());
+        destination.setMinimumTemperature(destinationDto.getMinimumTemperature());
+        destination.setMaximumTemperature(destinationDto.getMaximumTemperature());
+
         return repository.save(destination);
     }
 

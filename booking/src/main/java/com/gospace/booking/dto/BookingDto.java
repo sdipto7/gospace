@@ -49,4 +49,8 @@ public class BookingDto implements Serializable {
 
     @JsonProperty(access = WRITE_ONLY)
     private int version;
+
+    public boolean isNew() {
+        return this.id == 0;
+    }
 }

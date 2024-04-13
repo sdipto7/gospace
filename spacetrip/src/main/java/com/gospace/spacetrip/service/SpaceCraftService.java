@@ -1,6 +1,8 @@
 package com.gospace.spacetrip.service;
 
+import com.gospace.spacetrip.domain.Manufacturer;
 import com.gospace.spacetrip.domain.SpaceCraft;
+import com.gospace.spacetrip.dto.SpaceCraftDto;
 import com.gospace.spacetrip.repository.SpaceCraftRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,15 @@ public class SpaceCraftService {
     }
 
     @Transactional
-    public SpaceCraft saveOrUpdate(SpaceCraft spaceCraft) {
+    public SpaceCraft saveOrUpdate(SpaceCraftDto spaceCraftDto) {
+        SpaceCraft spaceCraft = spaceCraftDto.isNew() ? new SpaceCraft() : find(spaceCraftDto.getId());
+
+        spaceCraft.setName(spaceCraftDto.getName());
+        spaceCraft.setManufacturer(Manufacturer.fromLabel(spaceCraftDto.getManufacturer()));
+        spaceCraft.setManufactureDate(spaceCraftDto.getManufactureDate());
+        spaceCraft.setCrewCapacity(spaceCraftDto.getCrewCapacity());
+        spaceCraft.setPassengerCapacity(spaceCraftDto.getPassengerCapacity());
+
         return repository.save(spaceCraft);
     }
 

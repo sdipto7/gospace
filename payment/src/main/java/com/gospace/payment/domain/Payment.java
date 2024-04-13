@@ -16,8 +16,6 @@ import static com.gospace.payment.domain.PaymentStatus.SUCCESSFUL;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Entity

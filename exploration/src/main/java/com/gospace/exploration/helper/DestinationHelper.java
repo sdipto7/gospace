@@ -1,6 +1,5 @@
 package com.gospace.exploration.helper;
 
-import com.gospace.exploration.domain.CelestialBodyType;
 import com.gospace.exploration.domain.Destination;
 import com.gospace.exploration.dto.DestinationDto;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 @Component
 public class DestinationHelper {
 
-    public DestinationDto getDtoFromDestination(Destination destination) {
+    public DestinationDto getDestinationDto(Destination destination) {
 
         return DestinationDto.builder()
                 .name(destination.getName())
@@ -34,41 +33,10 @@ public class DestinationHelper {
                 .build();
     }
 
-    public Destination getDestinationFromDto(DestinationDto destinationDto) {
-
-        return Destination.builder()
-                .name(destinationDto.getName())
-                .celestialBodyType(CelestialBodyType.fromLabel(destinationDto.getCelestialBodyType()))
-                .description(destinationDto.getDescription())
-                .surfaceFeatures(destinationDto.getSurfaceFeatures())
-                .atmosphere(destinationDto.getAtmosphere())
-                .distanceFromEarth(destinationDto.getDistanceFromEarth())
-                .diameter(destinationDto.getDiameter())
-                .mass(destinationDto.getMass())
-                .gravity(destinationDto.getGravity())
-                .minimumTemperature(destinationDto.getMinimumTemperature())
-                .maximumTemperature(destinationDto.getMaximumTemperature())
-                .build();
-    }
-
-    public List<DestinationDto> getDtoListFromDestinationList(List<Destination> destinationList) {
+    public List<DestinationDto> getDestinationDtoList(List<Destination> destinationList) {
 
         return destinationList.stream()
-                .map(destination -> getDtoFromDestination(destination))
+                .map(destination -> getDestinationDto(destination))
                 .collect(Collectors.toList());
-    }
-
-    public void updateEntityFromDto(Destination destination, DestinationDto destinationDto) {
-        destination.setName(destinationDto.getName());
-        destination.setCelestialBodyType(CelestialBodyType.fromLabel(destinationDto.getCelestialBodyType()));
-        destination.setDescription(destinationDto.getDescription());
-        destination.setSurfaceFeatures(destinationDto.getSurfaceFeatures());
-        destination.setDistanceFromEarth(destinationDto.getDistanceFromEarth());
-        destination.setDiameter(destinationDto.getDiameter());
-        destination.setMass(destinationDto.getMass());
-        destination.setGravity(destinationDto.getGravity());
-        destination.setMinimumTemperature(destinationDto.getMinimumTemperature());
-        destination.setMaximumTemperature(destinationDto.getMaximumTemperature());
-        destination.setVersion(destinationDto.getVersion());
     }
 }
