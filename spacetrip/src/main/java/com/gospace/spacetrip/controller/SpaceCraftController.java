@@ -30,7 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/spacecraft")
 public class SpaceCraftController {
 
     private final SpaceCraftService service;
@@ -44,7 +44,7 @@ public class SpaceCraftController {
     private static final Logger log = LoggerFactory.getLogger(SpaceCraftController.class);
 
     @ResponseBody
-    @GetMapping("/spacecraft/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SpaceCraftDto> show(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
 
@@ -58,7 +58,7 @@ public class SpaceCraftController {
     }
 
     @ResponseBody
-    @GetMapping("/spacecraft/all")
+    @GetMapping("/all")
     public ResponseEntity<List<SpaceCraftDto>> showAll() {
         List<SpaceCraftDto> spaceCraftDtoList = helper.getDtoListFromSpaceCraftList(service.findAll());
 
@@ -66,7 +66,7 @@ public class SpaceCraftController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/spacecraft", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody SpaceCraftDto spaceCraftDto, Errors errors) {
 
         validator.validate(spaceCraftDto, errors);
@@ -96,7 +96,7 @@ public class SpaceCraftController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/spacecraft", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@Valid @RequestBody SpaceCraftDto spaceCraftDto, Errors errors) {
 
         validator.validate(spaceCraftDto, errors);
@@ -128,7 +128,7 @@ public class SpaceCraftController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/spacecraft/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
 

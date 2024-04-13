@@ -31,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/booking")
 public class BookingController {
 
     private final BookingService service;
@@ -45,7 +45,7 @@ public class BookingController {
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
     @ResponseBody
-    @GetMapping("/booking/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<BookingDto> show(@PathVariable int id) {
         Booking booking = service.find(id);
 
@@ -59,7 +59,7 @@ public class BookingController {
     }
 
     @ResponseBody
-    @GetMapping("/booking")
+    @GetMapping
     public ResponseEntity<BookingDto> showByReferenceNumber(@RequestParam String referenceNumber) {
         Booking booking = service.findByReferenceNumber(referenceNumber);
 
@@ -73,7 +73,7 @@ public class BookingController {
     }
 
     @ResponseBody
-    @GetMapping("/booking/all")
+    @GetMapping("/all")
     public ResponseEntity<List<BookingDto>> showAll() {
         List<BookingDto> bookingDtoList = helper.getDtoListFromBookingList(service.findAll());
 
@@ -81,7 +81,7 @@ public class BookingController {
     }
 
     @ResponseBody
-    @GetMapping("/booking/all/{status}")
+    @GetMapping("/all/{status}")
     public ResponseEntity<List<BookingDto>> showAllByStatus(@PathVariable String status) {
         List<Booking> bookingList = service.findAllByStatus(BookingStatus.fromLabel(status));
 
@@ -91,7 +91,7 @@ public class BookingController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/booking", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody BookingDto bookingDto, Errors errors) {
 
         validator.validate(bookingDto, errors);
@@ -121,7 +121,7 @@ public class BookingController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/booking", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@Valid @RequestBody BookingDto bookingDto, Errors errors) {
 
         validator.validate(bookingDto, errors);
@@ -153,7 +153,7 @@ public class BookingController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/booking/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Booking booking = service.find(id);
 

@@ -30,7 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/spacetrip")
 public class SpaceTripController {
 
     private final SpaceTripService service;
@@ -44,7 +44,7 @@ public class SpaceTripController {
     private static final Logger log = LoggerFactory.getLogger(SpaceTripController.class);
 
     @ResponseBody
-    @GetMapping("/spacetrip/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SpaceTripDto> show(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
 
@@ -58,7 +58,7 @@ public class SpaceTripController {
     }
 
     @ResponseBody
-    @GetMapping("/spacetrip/details/{id}")
+    @GetMapping("/details/{id}")
     public ResponseEntity<SpaceTripDetailsDto> showDetails(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
 
@@ -72,7 +72,7 @@ public class SpaceTripController {
     }
 
     @ResponseBody
-    @GetMapping("/spacetrip/available-trips")
+    @GetMapping("/available-trips")
     public ResponseEntity<List<SpaceTripDto>> showAll() {
         List<SpaceTripDto> availableSpaceTripDtoList = helper.getDtoListFromSpaceTripList(service.findAvailableSpaceTrips());
 
@@ -81,7 +81,7 @@ public class SpaceTripController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/spacetrip", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody SpaceTripDto spaceTripDto, Errors errors) {
 
         validator.validate(spaceTripDto, errors);
@@ -111,7 +111,7 @@ public class SpaceTripController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/spacetrip", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@Valid @RequestBody SpaceTripDto spaceTripDto, Errors errors) {
 
         validator.validate(spaceTripDto, errors);
@@ -143,7 +143,7 @@ public class SpaceTripController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/spacetrip/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
 

@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/payment")
 public class PaymentController {
 
     private final PaymentService service;
@@ -42,7 +42,7 @@ public class PaymentController {
     private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 
     @ResponseBody
-    @GetMapping("/payment/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PaymentDto> show(@PathVariable int id) {
         Payment payment = service.find(id);
 
@@ -56,7 +56,7 @@ public class PaymentController {
     }
 
     @ResponseBody
-    @GetMapping("/payment")
+    @GetMapping
     public ResponseEntity<PaymentDto> showByReferenceNumber(@RequestParam String referenceNumber) {
         Payment payment = service.findByReferenceNumber(referenceNumber);
 
@@ -72,7 +72,7 @@ public class PaymentController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/payment", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody PaymentDto paymentDto, Errors errors) {
 
         validator.validate(paymentDto, errors);

@@ -31,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/destination")
 public class DestinationController {
 
     private final DestinationService service;
@@ -45,7 +45,7 @@ public class DestinationController {
     private static final Logger log = LoggerFactory.getLogger(DestinationController.class);
 
     @ResponseBody
-    @GetMapping("/destination/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DestinationDto> show(@PathVariable int id) {
         Destination destination = service.find(id);
 
@@ -59,7 +59,7 @@ public class DestinationController {
     }
 
     @ResponseBody
-    @GetMapping("/destination/name/{id}")
+    @GetMapping("/name/{id}")
     public ResponseEntity<String> getDestinationName(@PathVariable int id) {
         Destination destination = service.find(id);
 
@@ -73,7 +73,7 @@ public class DestinationController {
     }
 
     @ResponseBody
-    @GetMapping("/destination/all")
+    @GetMapping("/all")
     public ResponseEntity<List<DestinationDto>> showAll() {
         List<DestinationDto> destinationDtoList = helper.getDtoListFromDestinationList(service.findAll());
 
@@ -82,7 +82,7 @@ public class DestinationController {
     }
 
     @ResponseBody
-    @GetMapping("/destination/all/{type}")
+    @GetMapping("/all/{type}")
     public ResponseEntity<List<DestinationDto>> showAllByType(@PathVariable(name = "type") String celestialBodyType) {
         List<Destination> destinationList = service.findAllByCelestialBodyType(CelestialBodyType.fromLabel(celestialBodyType));
 
@@ -93,7 +93,7 @@ public class DestinationController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/destination", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody DestinationDto destinationDto, Errors errors) throws IOException {
 
         validator.validate(destinationDto, errors);
@@ -123,7 +123,7 @@ public class DestinationController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/destination", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@Valid @RequestBody DestinationDto destinationDto, Errors errors) {
 
         validator.validate(destinationDto, errors);
@@ -155,7 +155,7 @@ public class DestinationController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/destination/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Destination destination = service.find(id);
 
