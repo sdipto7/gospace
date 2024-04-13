@@ -3,6 +3,7 @@ package com.gospace.spacetrip.helper;
 import com.gospace.spacetrip.domain.SpaceTrip;
 import com.gospace.spacetrip.dto.SpaceTripDetailsDto;
 import com.gospace.spacetrip.dto.SpaceTripDto;
+import com.gospace.spacetrip.proxy.ExplorationProxy;
 import com.gospace.spacetrip.proxy.dto.DestinationDto;
 import com.gospace.spacetrip.service.SpaceCraftService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,8 @@ public class SpaceTripHelper {
 
     private final SpaceCraftService spaceCraftService;
 
+    private final ExplorationProxy explorationProxy;
+
     public SpaceTripDto getDtoFromSpaceTrip(SpaceTrip spaceTrip) {
 
         return SpaceTripDto.builder()
@@ -40,9 +43,11 @@ public class SpaceTripHelper {
     }
 
     public SpaceTrip getSpaceTripFromDto(SpaceTripDto spaceTripDto) {
+        String destinationName = explorationProxy.getDestinationName(spaceTripDto.getDestinationId()).getBody();
 
         return SpaceTrip.builder()
                 .destinationId(spaceTripDto.getDestinationId())
+                .destinationName(destinationName)
                 .spaceCraft(spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId()))
                 .departureTime(spaceTripDto.getDepartureTime())
                 .estimatedArrivalTime(spaceTripDto.getEstimatedArrivalTime())
@@ -59,7 +64,8 @@ public class SpaceTripHelper {
                 .collect(toList());
     }
 
-    public SpaceTripDetailsDto getSpaceTripDetailsDto(SpaceTrip spaceTrip, DestinationDto destinationDto) {
+    public SpaceTripDetailsDto getSpaceTripDetailsDto(SpaceTrip spaceTrip) {
+        DestinationDto destinationDto = explorationProxy.show(spaceTrip.getDestinationId()).getBody();
 
         return SpaceTripDetailsDto.builder()
                 .spaceCraftDto(spaceCraftHelper.getDtoFromSpaceCraft(spaceTrip.getSpaceCraft()))
@@ -74,7 +80,10 @@ public class SpaceTripHelper {
     }
 
     public void updateEntityFromDto(SpaceTrip spaceTrip, SpaceTripDto spaceTripDto) {
+        String destinationName = explorationProxy.getDestinationName(spaceTripDto.getDestinationId()).getBody();
+
         spaceTrip.setDestinationId(spaceTripDto.getDestinationId());
+        spaceTrip.setDestinationName(destinationName);
         spaceTrip.setSpaceCraft(spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId()));
         spaceTrip.setDepartureTime(spaceTripDto.getDepartureTime());
         spaceTrip.setEstimatedArrivalTime(spaceTripDto.getEstimatedArrivalTime());

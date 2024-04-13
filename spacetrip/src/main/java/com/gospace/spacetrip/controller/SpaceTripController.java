@@ -7,8 +7,6 @@ import com.gospace.spacetrip.dto.ValidationResponseDto;
 import com.gospace.spacetrip.exception.SpaceTripNotFoundException;
 import com.gospace.spacetrip.helper.ApiValidationHelper;
 import com.gospace.spacetrip.helper.SpaceTripHelper;
-import com.gospace.spacetrip.proxy.ExplorationProxy;
-import com.gospace.spacetrip.proxy.dto.DestinationDto;
 import com.gospace.spacetrip.service.SpaceTripService;
 import com.gospace.spacetrip.validator.SpaceTripValidator;
 import jakarta.validation.Valid;
@@ -43,8 +41,6 @@ public class SpaceTripController {
 
     private final ApiValidationHelper apiValidationHelper;
 
-    private final ExplorationProxy explorationProxy;
-
     private static final Logger log = LoggerFactory.getLogger(SpaceTripController.class);
 
     @ResponseBody
@@ -72,16 +68,7 @@ public class SpaceTripController {
             throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip details found for the id: %d", id));
         }
 
-        DestinationDto destinationDto = explorationProxy.show(spaceTrip.getDestinationId()).getBody();
-
-        if (isNull(destinationDto)) {
-            log.info("[API:SPACETRIP:DETAILS] Error while processing Destination details with ID: {}" +
-                    " which is associated with SpaceTrip with ID: {}", spaceTrip.getDestinationId(), spaceTrip.getId());
-
-            throw new SpaceTripNotFoundException(String.format("Invalid Destination! No Destination found for the SpaceTrip with id: %d", id));
-        }
-
-        return new ResponseEntity<>(helper.getSpaceTripDetailsDto(spaceTrip, destinationDto), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getSpaceTripDetailsDto(spaceTrip), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -109,8 +96,6 @@ public class SpaceTripController {
         log.info("[API:SPACETRIP:SAVE] Successfully validated SpaceTrip Data, RequestBody: {}", spaceTripDto);
 
         SpaceTrip spaceTrip = helper.getSpaceTripFromDto(spaceTripDto);
-
-        spaceTrip.setDestinationName(explorationProxy.getDestinationName(spaceTrip.getDestinationId()).getBody());
 
         service.saveOrUpdate(spaceTrip);
 
@@ -143,8 +128,6 @@ public class SpaceTripController {
         SpaceTrip spaceTrip = service.find(spaceTripDto.getId());
 
         helper.updateEntityFromDto(spaceTrip, spaceTripDto);
-
-        spaceTrip.setDestinationName(explorationProxy.getDestinationName(spaceTrip.getDestinationId()).getBody());
 
         service.saveOrUpdate(spaceTrip);
 
