@@ -19,6 +19,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -69,6 +70,34 @@ public class SpaceTripController {
         }
 
         return new ResponseEntity<>(helper.getSpaceTripDetailsDto(spaceTrip), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/available-seats/{id}")
+    public ResponseEntity<Integer> getAvailableSeats(@PathVariable int id) {
+        SpaceTrip spaceTrip = service.find(id);
+
+        if (isNull(spaceTrip)) {
+            log.info("[API:SPACETRIP:SHOW-AVAILABLE-SEAT] Error while processing SpaceTrip show with ID: {}", id);
+
+            throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip available seat found for the id: %d", id));
+        }
+
+        return new ResponseEntity<>(spaceTrip.getAvailableSeats(), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/price/{id}")
+    public ResponseEntity<BigDecimal> getPrice(@PathVariable int id) {
+        SpaceTrip spaceTrip = service.find(id);
+
+        if (isNull(spaceTrip)) {
+            log.info("[API:SPACETRIP:SHOW-PRICE] Error while processing SpaceTrip show with ID: {}", id);
+
+            throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip ticket price found for the id: %d", id));
+        }
+
+        return new ResponseEntity<>(spaceTrip.getTicketPrice(), HttpStatus.OK);
     }
 
     @ResponseBody

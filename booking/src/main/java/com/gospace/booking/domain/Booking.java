@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serial;
+import java.math.BigDecimal;
 
 import static com.gospace.booking.domain.BookingStatus.CONFIRMED;
 
@@ -40,7 +41,7 @@ public class Booking extends Persistent {
 
     private int totalSeats;
 
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "booking_status")

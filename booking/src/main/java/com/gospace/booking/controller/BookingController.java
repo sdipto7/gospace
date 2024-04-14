@@ -2,7 +2,7 @@ package com.gospace.booking.controller;
 
 import com.gospace.booking.domain.Booking;
 import com.gospace.booking.domain.BookingStatus;
-import com.gospace.booking.dto.BookingDto;
+import com.gospace.booking.dto.BookingRequestDto;
 import com.gospace.booking.dto.BookingResponseDto;
 import com.gospace.booking.dto.ValidationResponseDto;
 import com.gospace.booking.exception.BookingNotFoundException;
@@ -93,9 +93,9 @@ public class BookingController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@Valid @RequestBody BookingDto bookingDto, Errors errors) {
+    public ResponseEntity<?> save(@Valid @RequestBody BookingRequestDto bookingRequestDto, Errors errors) {
 
-        validator.validate(bookingDto, errors);
+        validator.validate(bookingRequestDto, errors);
 
         if (errors.hasErrors()) {
             ResponseEntity<ValidationResponseDto> errorResponse = apiValidationHelper.getValidationResponseDto(errors.getGlobalErrors(), errors.getFieldErrors());
@@ -104,9 +104,9 @@ public class BookingController {
             return errorResponse;
         }
 
-        log.info("[API:BOOKING:SAVE] Successfully validated Booking Data, RequestBody: {}", bookingDto);
+        log.info("[API:BOOKING:SAVE] Successfully validated Booking Data, RequestBody: {}", bookingRequestDto);
 
-        Booking booking = service.saveOrUpdate(bookingDto);
+        Booking booking = service.saveOrUpdate(bookingRequestDto);
 
         log.info("[API:BOOKING:SAVE] Successfully processed Booking save, Response: {}", booking);
 
@@ -121,9 +121,9 @@ public class BookingController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update(@Valid @RequestBody BookingDto bookingDto, Errors errors) {
+    public ResponseEntity<?> update(@Valid @RequestBody BookingRequestDto bookingRequestDto, Errors errors) {
 
-        validator.validate(bookingDto, errors);
+        validator.validate(bookingRequestDto, errors);
 
         if (errors.hasErrors()) {
             ResponseEntity<ValidationResponseDto> errorResponse = apiValidationHelper.getValidationResponseDto(errors.getGlobalErrors(), errors.getFieldErrors());
@@ -132,9 +132,9 @@ public class BookingController {
             return errorResponse;
         }
 
-        log.info("[API:BOOKING:UPDATE] Successfully validated Booking Data, RequestBody: {}", bookingDto);
+        log.info("[API:BOOKING:UPDATE] Successfully validated Booking Data, RequestBody: {}", bookingRequestDto);
 
-        Booking booking = service.saveOrUpdate(bookingDto);
+        Booking booking = service.saveOrUpdate(bookingRequestDto);
 
         log.info("[API:BOOKING:UPDATE] Successfully processed Booking update, Response: {}", booking);
 

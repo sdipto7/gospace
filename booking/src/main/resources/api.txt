@@ -6,14 +6,41 @@
 
 Response-body sample:
 {
-    "tripId": 1,
-    "referenceNumber": "1ddf5396-11b2-421a-bd58-e640fa78ed2d",
-    "passengerName": "shahriar rumi dipto",
-    "passengerEmail": "shahriarrumidipto@gmail.com",
-    "passengerPhone": "+8801873308882",
-    "totalSeats": 4,
-    "totalPrice": 48000000,
-    "status": "Processing_Payment"
+    "spaceTripDetailsDto": {
+        "spaceCraftDto": {
+            "name": "Cosmic Explorer",
+            "manufacturer": "Space X",
+            "manufactureDate": "2022-04-05",
+            "crewCapacity": 250,
+            "passengerCapacity": 1600
+        },
+        "destinationDto": {
+            "name": "Mars",
+            "celestialBodyType": "Planet",
+            "description": "Description of planet Mars",
+            "surfaceFeatures": "Surface Features of planet Mars",
+            "atmosphere": "Atmosphere composition of Mars",
+            "distanceFromEarth": 2.114114,
+            "diameter": 6779,
+            "mass": 6.39E+23,
+            "gravity": 3.71,
+            "minimumTemperature": -153,
+            "maximumTemperature": 2E+1
+        },
+        "departureTime": "2033-05-15T06:00:00",
+        "estimatedArrivalTime": "2103-11-12T10:20:00",
+        "tripDuration": "70 years 5 months 28 days 4 hours 20 minutes 0 seconds",
+        "ticketPrice": 1550000.00,
+        "totalSeats": 1600,
+        "availableSeats": 100
+    },
+    "referenceNumber": "79676f06-7e03-4d91-9175-d24dc2bd68c1",
+    "passengerName": "Dipto",
+    "passengerEmail": "dipto@gmail.com",
+    "passengerPhone": "+8801873308809",
+    "totalSeats": 2,
+    "totalPrice": 24000000.0000000000,
+    "status": "Confirmed"
 }
 
 2. Post Requests:
@@ -21,11 +48,11 @@ Response-body sample:
 
 Request-body sample:
 {
+    "tripId": 1,
     "passengerName": "shahriar rumi dipto",
     "passengerEmail": "shahriarrumidipto7@gmail.com",
     "passengerPhone": "+8801873308989",
-    "totalSeats": 4,
-    "totalPrice": 48000000
+    "totalSeats": 4
 }
 
 3. Put Requests:
@@ -33,15 +60,15 @@ Request-body sample:
 
 Request-body sample:
 {
-    "id": 7,
-    "referenceNumber": "1ddf5396-11b2-421a-bd58-e640fa78ed2d",
+    "id": 2,
+    "tripId": 1,
+    "referenceNumber": "3e15832b-f86f-492d-9814-46479105560a",
     "passengerName": "shahriar rumi dipto",
     "passengerEmail": "shahriarrumidipto@gmail.com",
     "passengerPhone": "+8801873308889",
-    "totalSeats": 4,
-    "totalPrice": 48000000,
-    "status": "Processing_Payment",
-    "version": 2
+    "totalSeats": 3,
+    "status": "New",
+    "version": 1
 }
 
 4.Delete Requests:

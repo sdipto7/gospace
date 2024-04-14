@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author rumidipto
@@ -32,7 +33,7 @@ public class BookingResponseDto implements Serializable {
 
     private int totalSeats;
 
-    private int totalPrice; //this will be read only field as it will be calculated by unit price later.
+    private BigDecimal totalPrice;
 
     private String status; //status will be updated based on payment service later.
 }

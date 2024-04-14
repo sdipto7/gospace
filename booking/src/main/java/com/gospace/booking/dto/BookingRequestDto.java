@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 @Getter
 @Builder
 @ToString
-public class BookingDto implements Serializable {
+public class BookingRequestDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,8 +44,6 @@ public class BookingDto implements Serializable {
 
     @Min(value = 1, message = "{valid.booking.total.booked.seats.min}")
     private int totalSeats;
-
-    private int totalPrice; //this will be read only field as it will be calculated by unit price later.
 
     private String status; //status will be updated based on payment service later.
 
