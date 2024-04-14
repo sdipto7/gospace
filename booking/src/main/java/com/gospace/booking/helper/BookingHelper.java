@@ -1,7 +1,9 @@
 package com.gospace.booking.helper;
 
 import com.gospace.booking.domain.Booking;
-import com.gospace.booking.dto.BookingDto;
+import com.gospace.booking.dto.BookingResponseDto;
+import com.gospace.booking.proxy.SpaceTripProxy;
+import com.gospace.booking.proxy.dto.SpaceTripDetailsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +18,13 @@ import java.util.stream.Collectors;
 @Component
 public class BookingHelper {
 
-    public BookingDto getBookingDto(Booking booking) {
+    private final SpaceTripProxy spaceTripProxy;
 
-        return BookingDto.builder()
+    public BookingResponseDto getBookingResponseDto(Booking booking) {
+        SpaceTripDetailsDto spaceTripDetailsDto = spaceTripProxy.showDetails(booking.getTripId()).getBody();
+
+        return BookingResponseDto.builder()
+                .spaceTripDetailsDto(spaceTripDetailsDto)
                 .referenceNumber(booking.getReferenceNumber())
                 .passengerName(booking.getPassengerDetails().getName())
                 .passengerEmail(booking.getPassengerDetails().getEmail())
@@ -29,10 +35,10 @@ public class BookingHelper {
                 .build();
     }
 
-    public List<BookingDto> getBookingDtoList(List<Booking> bookingList) {
+    public List<BookingResponseDto> getBookingResponseDtoList(List<Booking> bookingList) {
 
         return bookingList.stream()
-                .map(booking -> getBookingDto(booking))
+                .map(booking -> getBookingResponseDto(booking))
                 .collect(Collectors.toList());
     }
 }

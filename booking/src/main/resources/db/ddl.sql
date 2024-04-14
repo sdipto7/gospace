@@ -4,6 +4,7 @@ CREATE TABLE booking
     version          INT          NOT NULL,
     created          DATETIME     NOT NULL,
     updated          DATETIME,
+    trip_id          INT          NOT NULL,
     reference_number VARCHAR(256) NOT NULL,
     passenger_name   VARCHAR(256) NOT NULL,
     passenger_email  VARCHAR(256) NOT NULL,

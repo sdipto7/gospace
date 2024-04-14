@@ -3,6 +3,7 @@ package com.gospace.booking.controller;
 import com.gospace.booking.domain.Booking;
 import com.gospace.booking.domain.BookingStatus;
 import com.gospace.booking.dto.BookingDto;
+import com.gospace.booking.dto.BookingResponseDto;
 import com.gospace.booking.dto.ValidationResponseDto;
 import com.gospace.booking.exception.BookingNotFoundException;
 import com.gospace.booking.exception.InvalidBookingStatusException;
@@ -46,7 +47,7 @@ public class BookingController {
 
     @ResponseBody
     @GetMapping("/{id}")
-    public ResponseEntity<BookingDto> show(@PathVariable int id) {
+    public ResponseEntity<BookingResponseDto> show(@PathVariable int id) {
         Booking booking = service.find(id);
 
         if (isNull(booking)) {
@@ -55,37 +56,37 @@ public class BookingController {
             throw new BookingNotFoundException(String.format("Invalid id! No Booking found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getBookingDto(booking), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getBookingResponseDto(booking), HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping
-    public ResponseEntity<BookingDto> showByReferenceNumber(@RequestParam String referenceNumber) {
+    public ResponseEntity<BookingResponseDto> showByReferenceNumber(@RequestParam String referenceNumber) {
         Booking booking = service.findByReferenceNumber(referenceNumber);
 
         if (isNull(booking)) {
             log.info("[API:BOOKING:SHOW:REFERENCE-NUMBER] Error while processing Booking show with ReferenceNumber: {}", referenceNumber);
 
-            throw new BookingNotFoundException(String.format("Invalid reference number! No Booking found for the ReferenceNumber: %d", referenceNumber));
+            throw new BookingNotFoundException(String.format("Invalid reference number! No Booking found for the ReferenceNumber: %s", referenceNumber));
         }
 
-        return new ResponseEntity<>(helper.getBookingDto(booking), HttpStatus.OK);
+        return new ResponseEntity<>(helper.getBookingResponseDto(booking), HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping("/all")
-    public ResponseEntity<List<BookingDto>> showAll() {
-        List<BookingDto> bookingDtoList = helper.getBookingDtoList(service.findAll());
+    public ResponseEntity<List<BookingResponseDto>> showAll() {
+        List<BookingResponseDto> bookingDtoList = helper.getBookingResponseDtoList(service.findAll());
 
         return new ResponseEntity<>(bookingDtoList, bookingDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping("/all/{status}")
-    public ResponseEntity<List<BookingDto>> showAllByStatus(@PathVariable String status) {
+    public ResponseEntity<List<BookingResponseDto>> showAllByStatus(@PathVariable String status) {
         List<Booking> bookingList = service.findAllByStatus(BookingStatus.fromLabel(status));
 
-        List<BookingDto> bookingDtoList = helper.getBookingDtoList(bookingList);
+        List<BookingResponseDto> bookingDtoList = helper.getBookingResponseDtoList(bookingList);
 
         return new ResponseEntity<>(bookingDtoList, bookingDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }

@@ -26,6 +26,8 @@ public class BookingDto implements Serializable {
     @JsonProperty(access = WRITE_ONLY)
     private int id;
 
+    private int tripId;
+
     private String referenceNumber;
 
     @NotBlank(message = "{valid.booking.passenger.name.notBlank}")

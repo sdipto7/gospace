@@ -26,6 +26,8 @@ public class Booking extends Persistent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private int tripId;
+
     private String referenceNumber;
 
     @Embedded
