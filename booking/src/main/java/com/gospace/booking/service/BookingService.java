@@ -74,7 +74,7 @@ public class BookingService {
         booking.setTotalSeats(bookingRequestDto.getTotalSeats());
         booking.setStatus(PROCESSING_PAYMENT);
 
-        BigDecimal ticketPrice = spaceTripProxy.getPrice(bookingRequestDto.getTripId()).getBody();
+        BigDecimal ticketPrice = spaceTripProxy.getSpaceTripPrice(bookingRequestDto.getTripId()).getBody();
         booking.setTotalPrice(ticketPrice.multiply(BigDecimal.valueOf(bookingRequestDto.getTotalSeats())));
 
         return repository.save(booking);

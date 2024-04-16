@@ -1,5 +1,6 @@
 package com.gospace.exploration.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
@@ -73,6 +74,7 @@ public class DestinationDto implements Serializable {
     @JsonProperty(access = WRITE_ONLY)
     private int version;
 
+    @JsonIgnore
     public boolean isNew() {
         return this.id == 0;
     }

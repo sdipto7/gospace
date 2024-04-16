@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -73,8 +74,16 @@ public class SpaceTripController {
     }
 
     @ResponseBody
-    @GetMapping("/available-seats/{id}")
-    public ResponseEntity<Integer> getAvailableSeats(@PathVariable int id) {
+    @GetMapping("/proxy/v1/details/{id}")
+    public ResponseEntity<SpaceTripDetailsDto> getSpaceTripDetailsDto(@PathVariable int id) {
+        SpaceTrip spaceTrip = service.find(id);
+
+        return new ResponseEntity<>(nonNull(spaceTrip) ? helper.getSpaceTripDetailsDto(spaceTrip) : null, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/proxy/v1/available-seats/{id}")
+    public ResponseEntity<Integer> getSpaceTripAvailableSeats(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
 
         if (isNull(spaceTrip)) {
@@ -87,8 +96,8 @@ public class SpaceTripController {
     }
 
     @ResponseBody
-    @GetMapping("/price/{id}")
-    public ResponseEntity<BigDecimal> getPrice(@PathVariable int id) {
+    @GetMapping("/proxy/v1/price/{id}")
+    public ResponseEntity<BigDecimal> getSpaceTripPrice(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
 
         if (isNull(spaceTrip)) {

@@ -1,5 +1,6 @@
 package com.gospace.booking.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -50,6 +51,7 @@ public class BookingRequestDto implements Serializable {
     @JsonProperty(access = WRITE_ONLY)
     private int version;
 
+    @JsonIgnore
     public boolean isNew() {
         return this.id == 0;
     }

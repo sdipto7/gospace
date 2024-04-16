@@ -37,6 +37,13 @@ public class BookingValidator implements Validator {
             validateBooking(bookingRequestDto, errors);
         }
 
+        if (bookingRequestDto.getTripId() == 0 || isNull(spaceTripProxy.getSpaceTripDetailsDto(bookingRequestDto.getTripId()).getBody())) {
+            errors.rejectValue("tripId",
+                    "valid.booking.invalid.trip.id",
+                    "Please provide a valid SpaceTrip ID! SpaceTrip not found by the given identifier");
+            return;
+        }
+
         validatePassengerEmail(bookingRequestDto, errors);
 
         validatePassengerPhone(bookingRequestDto, errors);
@@ -96,7 +103,7 @@ public class BookingValidator implements Validator {
     }
 
     private void validateTotalSeats(BookingRequestDto bookingRequestDto, Errors errors) {
-        Integer availableSeats = spaceTripProxy.getAvailableSeats(bookingRequestDto.getTripId()).getBody();
+        Integer availableSeats = spaceTripProxy.getSpaceTripAvailableSeats(bookingRequestDto.getTripId()).getBody();
 
         if (isNull(availableSeats) || availableSeats == 0) {
             errors.reject("valid.spacetrip.availableSeats", "No seats are available in the selected spacetrip");

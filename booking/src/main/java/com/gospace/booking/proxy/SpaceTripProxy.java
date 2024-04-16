@@ -17,14 +17,14 @@ import java.math.BigDecimal;
 public interface SpaceTripProxy {
 
     @ResponseBody
-    @GetMapping("/api/spacetrip/details/{id}")
-    ResponseEntity<SpaceTripDetailsDto> showDetails(@PathVariable int id);
+    @GetMapping("/api/spacetrip/proxy/v1/details/{id}")
+    ResponseEntity<SpaceTripDetailsDto> getSpaceTripDetailsDto(@PathVariable int id);
 
     @ResponseBody
-    @GetMapping("/api/spacetrip/available-seats/{id}")
-    ResponseEntity<Integer> getAvailableSeats(@PathVariable int id);
+    @GetMapping("/api/spacetrip/proxy/v1/available-seats/{id}")
+    ResponseEntity<Integer> getSpaceTripAvailableSeats(@PathVariable int id);
 
     @ResponseBody
-    @GetMapping("/api/spacetrip/price/{id}")
-    ResponseEntity<BigDecimal> getPrice(@PathVariable int id);
+    @GetMapping("/api/spacetrip/proxy/v1/price/{id}")
+    ResponseEntity<BigDecimal> getSpaceTripPrice(@PathVariable int id);
 }

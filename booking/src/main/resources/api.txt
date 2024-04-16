@@ -67,7 +67,6 @@ Request-body sample:
     "passengerEmail": "shahriarrumidipto@gmail.com",
     "passengerPhone": "+8801873308889",
     "totalSeats": 3,
-    "status": "New",
     "version": 1
 }
 

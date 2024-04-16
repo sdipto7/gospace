@@ -21,7 +21,7 @@ public class BookingHelper {
     private final SpaceTripProxy spaceTripProxy;
 
     public BookingResponseDto getBookingResponseDto(Booking booking) {
-        SpaceTripDetailsDto spaceTripDetailsDto = spaceTripProxy.showDetails(booking.getTripId()).getBody();
+        SpaceTripDetailsDto spaceTripDetailsDto = spaceTripProxy.getSpaceTripDetailsDto(booking.getTripId()).getBody();
 
         return BookingResponseDto.builder()
                 .spaceTripDetailsDto(spaceTripDetailsDto)
