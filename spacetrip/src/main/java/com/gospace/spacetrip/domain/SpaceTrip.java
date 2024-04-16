@@ -30,8 +30,9 @@ public class SpaceTrip extends Persistent {
 
     private String destinationName;
 
-    @OneToOne
-    private SpaceCraft spaceCraft;
+    private int spaceCraftId;
+
+    private String spaceCraftName;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     private LocalDateTime departureTime;

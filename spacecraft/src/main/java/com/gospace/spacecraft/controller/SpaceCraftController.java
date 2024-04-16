@@ -1,14 +1,13 @@
-package com.gospace.spacetrip.controller;
+package com.gospace.spacecraft.controller;
 
-import com.gospace.spacetrip.domain.SpaceCraft;
-import com.gospace.spacetrip.dto.SpaceCraftDto;
-import com.gospace.spacetrip.dto.ValidationResponseDto;
-import com.gospace.spacetrip.exception.SpaceCraftNotFoundException;
-import com.gospace.spacetrip.exception.SpaceTripNotFoundException;
-import com.gospace.spacetrip.helper.ApiValidationHelper;
-import com.gospace.spacetrip.helper.SpaceCraftHelper;
-import com.gospace.spacetrip.service.SpaceCraftService;
-import com.gospace.spacetrip.validator.SpaceCraftValidator;
+import com.gospace.spacecraft.domain.SpaceCraft;
+import com.gospace.spacecraft.dto.SpaceCraftDto;
+import com.gospace.spacecraft.dto.ValidationResponseDto;
+import com.gospace.spacecraft.exception.SpaceCraftNotFoundException;
+import com.gospace.spacecraft.helper.ApiValidationHelper;
+import com.gospace.spacecraft.helper.SpaceCraftHelper;
+import com.gospace.spacecraft.service.SpaceCraftService;
+import com.gospace.spacecraft.validator.SpaceCraftValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -55,6 +55,28 @@ public class SpaceCraftController {
         }
 
         return new ResponseEntity<>(helper.getSpaceCraftDto(spaceCraft), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/proxy/v1/{id}")
+    public ResponseEntity<SpaceCraftDto> getSpaceCraftDto(@PathVariable int id) {
+        SpaceCraft spaceCraft = service.find(id);
+
+        return new ResponseEntity<>(nonNull(spaceCraft) ? helper.getSpaceCraftDto(spaceCraft) : null, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/proxy/v1/name/{id}")
+    public ResponseEntity<String> getSpaceCraftName(@PathVariable int id) {
+        SpaceCraft spaceCraft = service.find(id);
+
+        if (isNull(spaceCraft)) {
+            log.info("[API:SPACECRAFT:SHOW-NAME] Error while processing SpaceCraft show with ID: {}", id);
+
+            throw new SpaceCraftNotFoundException(String.format("Invalid id! No SpaceCraft name found for the id: %d", id));
+        }
+
+        return new ResponseEntity<>(spaceCraft.getName(), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -129,7 +151,7 @@ public class SpaceCraftController {
         if (isNull(spaceCraft)) {
             log.info("[API:SPACECRAFT:DELETE] Error while processing SpaceCraft delete with ID: {}", id);
 
-            throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceCraft found to delete for the id: %d", id));
+            throw new SpaceCraftNotFoundException(String.format("Invalid id! No SpaceCraft found to delete for the id: %d", id));
         }
 
         service.delete(spaceCraft);

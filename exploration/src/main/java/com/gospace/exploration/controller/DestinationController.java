@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -59,7 +60,15 @@ public class DestinationController {
     }
 
     @ResponseBody
-    @GetMapping("/name/{id}")
+    @GetMapping("/proxy/v1/{id}")
+    public ResponseEntity<DestinationDto> getDestinationDto(@PathVariable int id) {
+        Destination destination = service.find(id);
+
+        return new ResponseEntity<>(nonNull(destination) ? helper.getDestinationDto(destination) : null, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/proxy/v1/name/{id}")
     public ResponseEntity<String> getDestinationName(@PathVariable int id) {
         Destination destination = service.find(id);
 

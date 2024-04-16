@@ -1,9 +1,9 @@
-package com.gospace.spacetrip.service;
+package com.gospace.spacecraft.service;
 
-import com.gospace.spacetrip.domain.Manufacturer;
-import com.gospace.spacetrip.domain.SpaceCraft;
-import com.gospace.spacetrip.dto.SpaceCraftDto;
-import com.gospace.spacetrip.repository.SpaceCraftRepository;
+import com.gospace.spacecraft.domain.Manufacturer;
+import com.gospace.spacecraft.domain.SpaceCraft;
+import com.gospace.spacecraft.dto.SpaceCraftDto;
+import com.gospace.spacecraft.repository.SpaceCraftRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

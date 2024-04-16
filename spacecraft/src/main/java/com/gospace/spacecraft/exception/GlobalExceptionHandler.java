@@ -1,6 +1,6 @@
-package com.gospace.spacetrip.exception;
+package com.gospace.spacecraft.exception;
 
-import com.gospace.spacetrip.dto.ErrorResponseDto;
+import com.gospace.spacecraft.dto.ErrorResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(SpaceTripNotFoundException.class)
-    public final ResponseEntity<ErrorResponseDto> handleNotFoundException(SpaceTripNotFoundException ex, WebRequest request) {
+    @ExceptionHandler(SpaceCraftNotFoundException.class)
+    public final ResponseEntity<ErrorResponseDto> handleNotFoundException(SpaceCraftNotFoundException ex, WebRequest request) {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 LocalDateTime.now(),
                 ex.getMessage(),

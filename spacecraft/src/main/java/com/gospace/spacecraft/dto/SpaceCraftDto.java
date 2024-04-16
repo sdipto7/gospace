@@ -1,5 +1,6 @@
-package com.gospace.spacetrip.dto;
+package com.gospace.spacecraft.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -46,6 +47,7 @@ public class SpaceCraftDto implements Serializable {
     @JsonProperty(access = WRITE_ONLY)
     private int version;
 
+    @JsonIgnore
     public boolean isNew() {
         return this.id == 0;
     }

@@ -1,7 +1,7 @@
-package com.gospace.spacetrip.helper;
+package com.gospace.spacecraft.helper;
 
-import com.gospace.spacetrip.domain.SpaceCraft;
-import com.gospace.spacetrip.dto.SpaceCraftDto;
+import com.gospace.spacecraft.domain.SpaceCraft;
+import com.gospace.spacecraft.dto.SpaceCraftDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

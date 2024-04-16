@@ -1,7 +1,7 @@
 package com.gospace.spacetrip.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,9 +34,11 @@ public class SpaceTripDto implements Serializable {
     @JsonProperty(access = READ_ONLY)
     private String destinationName;
 
-    @NotNull
-    @Valid
-    private SpaceCraftDto spaceCraftDto;
+    @JsonProperty(access = WRITE_ONLY)
+    private int spaceCraftId;
+
+    @JsonProperty(access = READ_ONLY)
+    private String spaceCraftName;
 
     @NotNull
     @Future
@@ -62,6 +64,7 @@ public class SpaceTripDto implements Serializable {
     @JsonProperty(access = WRITE_ONLY)
     private int version;
 
+    @JsonIgnore
     public boolean isNew() {
         return this.id == 0;
     }

@@ -1,9 +1,10 @@
 package com.gospace.spacetrip.validator;
 
-import com.gospace.spacetrip.domain.SpaceCraft;
 import com.gospace.spacetrip.domain.SpaceTrip;
 import com.gospace.spacetrip.dto.SpaceTripDto;
-import com.gospace.spacetrip.service.SpaceCraftService;
+import com.gospace.spacetrip.proxy.ExplorationProxy;
+import com.gospace.spacetrip.proxy.SpaceCraftProxy;
+import com.gospace.spacetrip.proxy.dto.SpaceCraftDto;
 import com.gospace.spacetrip.service.SpaceTripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,9 @@ public class SpaceTripValidator implements Validator {
 
     private final SpaceTripService service;
 
-    private final SpaceCraftService spaceCraftService;
+    private final ExplorationProxy explorationProxy;
+
+    private final SpaceCraftProxy spaceCraftProxy;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -38,11 +41,26 @@ public class SpaceTripValidator implements Validator {
             validateSpaceTrip(spaceTripDto, errors);
         }
 
+        if (spaceTripDto.getDestinationId() == 0 || isNull(explorationProxy.getDestinationDto(spaceTripDto.getDestinationId()).getBody())) {
+            errors.rejectValue("destinationId",
+                    "valid.spacetrip.invalid.destination.id",
+                    "Please provide a valid Destination ID! Destination not found by the given identifier");
+            return;
+        }
+
+        SpaceCraftDto spaceCraftDto = spaceCraftProxy.getSpaceCraftDto(spaceTripDto.getSpaceCraftId()).getBody();
+        if (spaceTripDto.getSpaceCraftId() == 0 || isNull(spaceCraftDto)) {
+            errors.rejectValue("spaceCraftId",
+                    "valid.spacetrip.invalid.spacecraft.id",
+                    "Please provide a valid Spacecraft ID! SpaceCraft not found by the given identifier");
+            return;
+        }
+
+        validateDuplicateSpaceCraft(spaceTripDto, errors);
+
         validateDateRange(spaceTripDto, errors);
 
-        validateSpaceCraft(spaceTripDto, errors);
-
-        validateSeatCapacity(spaceTripDto, errors);
+        validateSeatCapacity(spaceTripDto, spaceCraftDto, errors);
     }
 
     private void validateSpaceTrip(SpaceTripDto spaceTripDto, Errors errors) {
@@ -72,52 +90,23 @@ public class SpaceTripValidator implements Validator {
         }
     }
 
-    private void validateSpaceCraft(SpaceTripDto spaceTripDto, Errors errors) {
-        if (isNull(spaceTripDto.getSpaceCraftDto())) {
-            errors.rejectValue("spaceCraftDto",
-                    "valid.spacetrip.invalid.spacecraft.data",
-                    "Spacecraft cannot be empty");
-            return;
-        }
-
-        SpaceCraft spaceCraft = spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId());
-        if (isNull(spaceCraft)) {
-            errors.rejectValue("spaceCraftDto.id",
-                    "valid.spacecraft.data",
-                    "SpaceCraft not found by the given identifier");
-            return;
-        }
-
+    private void validateDuplicateSpaceCraft(SpaceTripDto spaceTripDto, Errors errors) {
         boolean hasDuplicateSpaceCraft = service.findAll()
                 .stream()
                 .anyMatch(spaceTrip -> spaceTrip.getId() != spaceTripDto.getId()
-                        && spaceTrip.getSpaceCraft().getId() == spaceTripDto.getSpaceCraftDto().getId());
+                        && spaceTrip.getSpaceCraftId() == spaceTripDto.getSpaceCraftId());
 
         if (hasDuplicateSpaceCraft) {
-            errors.rejectValue("spaceCraftDto",
+            errors.rejectValue("spaceCraftId",
                     "valid.spacetrip.duplicate.spacecraft",
-                    "The given spacecraft is already being used by another space trip");
+                    "The given spacecraft id is already being used by another space trip");
         }
     }
 
-    private void validateSeatCapacity(SpaceTripDto spaceTripDto, Errors errors) {
-        SpaceCraft spaceCraft = spaceCraftService.find(spaceTripDto.getSpaceCraftDto().getId());
-
-        if (isNull(spaceCraft)) {
-            return;
-        }
-
-        if (spaceTripDto.getSpaceCraftDto().getPassengerCapacity() != spaceCraft.getPassengerCapacity()) {
-            errors.rejectValue("spaceCraftDto.passengerCapacity",
-                    "valid.spacecraft.passenger.seats.mismatch",
-                    "The given space craft's passenger seat count does not match with the actual spacecraft's passenger seat count");
-            return;
-        }
-
-        if (spaceTripDto.getTotalSeats() != spaceCraft.getPassengerCapacity()) {
+    private void validateSeatCapacity(SpaceTripDto spaceTripDto, SpaceCraftDto spaceCraftDto, Errors errors) {
+        if (spaceTripDto.getTotalSeats() != spaceCraftDto.getPassengerCapacity()) {
             errors.rejectValue("totalSeats", "valid.spacetrip.total.seats",
                     "Total seat of a space trip must be equal to the passenger capacity of the space craft");
-            return;
         }
 
         if (spaceTripDto.getTotalSeats() < spaceTripDto.getAvailableSeats()) {

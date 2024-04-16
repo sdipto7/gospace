@@ -4,7 +4,9 @@ import com.gospace.spacetrip.domain.SpaceTrip;
 import com.gospace.spacetrip.dto.SpaceTripDetailsDto;
 import com.gospace.spacetrip.dto.SpaceTripDto;
 import com.gospace.spacetrip.proxy.ExplorationProxy;
+import com.gospace.spacetrip.proxy.SpaceCraftProxy;
 import com.gospace.spacetrip.proxy.dto.DestinationDto;
+import com.gospace.spacetrip.proxy.dto.SpaceCraftDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,15 +23,15 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class SpaceTripHelper {
 
-    private final SpaceCraftHelper spaceCraftHelper;
-
     private final ExplorationProxy explorationProxy;
+
+    private final SpaceCraftProxy spaceCraftProxy;
 
     public SpaceTripDto getSpaceTripDto(SpaceTrip spaceTrip) {
 
         return SpaceTripDto.builder()
                 .destinationName(spaceTrip.getDestinationName())
-                .spaceCraftDto(spaceCraftHelper.getSpaceCraftDto(spaceTrip.getSpaceCraft()))
+                .spaceCraftName(spaceTrip.getSpaceCraftName())
                 .departureTime(spaceTrip.getDepartureTime())
                 .estimatedArrivalTime(spaceTrip.getEstimatedArrivalTime())
                 .tripDuration(getFormattedDateTimeDifference(spaceTrip.getDepartureTime(), spaceTrip.getEstimatedArrivalTime()))
@@ -47,11 +49,12 @@ public class SpaceTripHelper {
     }
 
     public SpaceTripDetailsDto getSpaceTripDetailsDto(SpaceTrip spaceTrip) {
-        DestinationDto destinationDto = explorationProxy.show(spaceTrip.getDestinationId()).getBody();
+        DestinationDto destinationDto = explorationProxy.getDestinationDto(spaceTrip.getDestinationId()).getBody();
+        SpaceCraftDto spaceCraftDto = spaceCraftProxy.getSpaceCraftDto(spaceTrip.getSpaceCraftId()).getBody();
 
         return SpaceTripDetailsDto.builder()
-                .spaceCraftDto(spaceCraftHelper.getSpaceCraftDto(spaceTrip.getSpaceCraft()))
                 .destinationDto(destinationDto)
+                .spaceCraftDto(spaceCraftDto)
                 .departureTime(spaceTrip.getDepartureTime())
                 .estimatedArrivalTime(spaceTrip.getEstimatedArrivalTime())
                 .tripDuration(getFormattedDateTimeDifference(spaceTrip.getDepartureTime(), spaceTrip.getEstimatedArrivalTime()))

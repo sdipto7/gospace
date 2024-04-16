@@ -1,4 +1,4 @@
-package com.gospace.spacetrip.exception;
+package com.gospace.spacecraft.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

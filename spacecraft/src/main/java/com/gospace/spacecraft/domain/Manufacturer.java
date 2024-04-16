@@ -1,4 +1,4 @@
-package com.gospace.spacetrip.domain;
+package com.gospace.spacecraft.domain;
 
 /**
  * @author rumidipto

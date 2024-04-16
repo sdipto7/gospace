@@ -3,20 +3,12 @@ SpaceTrip:
 /api/spacetrip/{id}
 /api/spacetrip/details/{id}
 /api/spacetrip/available-trips
-/api/spacecraft/{id}
-/api/spacecraft/all
 
 response-body sample:
 /api/spacetrip/{id}
 {
     "destinationName": "Titan",
-    "spaceCraftDto": {
-        "name": "Galactica Shuttle",
-        "manufacturer": "Sierra Space",
-        "manufactureDate": "2015-06-17",
-        "crewCapacity": 250,
-        "passengerCapacity": 1500
-    },
+    "spaceCraftName": "Galactica Shuttle",
     "departureTime": "2028-02-07T06:00:00",
     "estimatedArrivalTime": "2064-07-26T10:20:00",
     "tripDuration": "36 years 5 months 19 days 4 hours 20 minutes 0 seconds",
@@ -25,80 +17,33 @@ response-body sample:
     "availableSeats": 1500
 }
 
-response-body sample:
-/api/spacecraft/{id}
-{
-    "name": "Star Voyager",
-    "manufacturer": "Space X",
-    "manufactureDate": "2021-03-05",
-    "crewCapacity": 250,
-    "passengerCapacity": 1600
-}
-
 2. Post Requests:
 /api/spacetrip
 => request-body sample:
 {
-    "destinationId": 8,
-    "spaceCraftDto": {
-        "id": 6,
-        "name": "Cosmic Explorer",
-        "manufacturer": "Space X",
-        "manufactureDate": "2022-04-05",
-        "crewCapacity": 250,
-        "passengerCapacity": 1600
-    },
+    "destinationId": 1,
+    "spaceCraftId": 6,
     "departureTime": "2033-05-15T06:00:00",
     "estimatedArrivalTime": "2083-11-12T10:20:00",
-    "ticketPrice": 12000000.00,
-    "totalSeats": 1600,
-    "availableSeats": 1600
-}
-
-/api/spacecraft
-=> request-body sample:
-{
-    "name": "Star Voyager II",
-    "manufacturer": "Space X",
-    "manufactureDate": "2021-03-05",
-    "crewCapacity": 250,
-    "passengerCapacity": 1600
+    "ticketPrice": 22000000.00,
+    "totalSeats": 2600,
+    "availableSeats": 2600
 }
 
 3. Put Requests:
 /api/spacetrip
 => request-body sample:
 {
-    "id": 5,
+    "id": 7,
     "destinationId": 1,
-    "spaceCraftDto": {
-        "id": 6,
-        "name": "Cosmic Explorer",
-        "manufacturer": "Space X",
-        "manufactureDate": "2022-04-05",
-        "crewCapacity": 250,
-        "passengerCapacity": 1600
-    },
+    "spaceCraftId": 6,
     "departureTime": "2033-05-15T06:00:00",
-    "estimatedArrivalTime": "2093-11-12T10:20:00",
-    "ticketPrice": 9500000.00,
-    "totalSeats": 1600,
-    "availableSeats": 1200,
-    "version": 2
-}
-
-/api/spacecraft
-=> request-body sample:
-{
-    "id": 6,
-    "name": "Cosmic Explorer",
-    "manufacturer": "Space X",
-    "manufactureDate": "2022-04-05",
-    "crewCapacity": 250,
-    "passengerCapacity": 1600,
-    "version": 2
+    "estimatedArrivalTime": "2083-11-12T10:20:00",
+    "ticketPrice": 32000000.00,
+    "totalSeats": 2600,
+    "availableSeats": 600,
+    "version": 0
 }
 
 4. Delete Requests:
 /api/spacetrip/{id}
-/api/spacecraft/{id}

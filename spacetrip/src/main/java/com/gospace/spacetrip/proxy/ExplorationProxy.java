@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public interface ExplorationProxy {
 
     @ResponseBody
-    @GetMapping("/api/destination/{id}")
-    ResponseEntity<DestinationDto> show(@PathVariable int id);
+    @GetMapping("/api/destination/proxy/v1/{id}")
+    ResponseEntity<DestinationDto> getDestinationDto(@PathVariable int id);
 
     @ResponseBody
-    @GetMapping("/api/destination/name/{id}")
+    @GetMapping("/api/destination/proxy/v1/name/{id}")
     ResponseEntity<String> getDestinationName(@PathVariable int id);
 }

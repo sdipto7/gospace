@@ -1,6 +1,7 @@
 package com.gospace.spacetrip.dto;
 
 import com.gospace.spacetrip.proxy.dto.DestinationDto;
+import com.gospace.spacetrip.proxy.dto.SpaceCraftDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;

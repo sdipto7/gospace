@@ -1,15 +1,15 @@
-package com.gospace.spacetrip.validator;
+package com.gospace.spacecraft.validator;
 
-import com.gospace.spacetrip.domain.Manufacturer;
-import com.gospace.spacetrip.domain.SpaceCraft;
-import com.gospace.spacetrip.dto.SpaceCraftDto;
-import com.gospace.spacetrip.service.SpaceCraftService;
+import com.gospace.spacecraft.domain.Manufacturer;
+import com.gospace.spacecraft.domain.SpaceCraft;
+import com.gospace.spacecraft.dto.SpaceCraftDto;
+import com.gospace.spacecraft.service.SpaceCraftService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import static com.gospace.spacetrip.util.ServletUtil.isPutRequest;
+import static com.gospace.spacecraft.util.ServletUtil.isPutRequest;
 import static java.util.Objects.isNull;
 
 /**
