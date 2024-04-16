@@ -6,9 +6,8 @@ package com.gospace.booking.domain;
  */
 public enum BookingStatus {
 
-    NEW("New"),
-    DRAFT("Draft"),
     PROCESSING_PAYMENT("Processing_Payment"),
+    PAYMENT_FAILED("Payment_Failed"),
     CONFIRMED("Confirmed");
 
     private String label;

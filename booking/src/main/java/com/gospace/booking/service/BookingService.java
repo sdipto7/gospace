@@ -7,6 +7,7 @@ import com.gospace.booking.dto.BookingRequestDto;
 import com.gospace.booking.proxy.SpaceTripProxy;
 import com.gospace.booking.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.gospace.booking.domain.BookingStatus.NEW;
+import static com.gospace.booking.domain.BookingStatus.*;
+import static java.util.Arrays.asList;
+import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * @author rumidipto
@@ -59,20 +63,32 @@ public class BookingService {
             booking.setTripId(bookingRequestDto.getTripId());
             booking.setReferenceNumber(UUID.randomUUID().toString());
             booking.setPassengerDetails(new PassengerDetails());
-            booking.setStatus(NEW);
 
         } else {
             booking = find(bookingRequestDto.getId());
-            booking.setStatus(BookingStatus.fromLabel(bookingRequestDto.getStatus())); //this will be set based on payment status
         }
 
         booking.getPassengerDetails().setName(bookingRequestDto.getPassengerName());
         booking.getPassengerDetails().setEmail(bookingRequestDto.getPassengerEmail());
         booking.getPassengerDetails().setPhone(bookingRequestDto.getPassengerPhone());
         booking.setTotalSeats(bookingRequestDto.getTotalSeats());
+        booking.setStatus(PROCESSING_PAYMENT);
 
         BigDecimal ticketPrice = spaceTripProxy.getPrice(bookingRequestDto.getTripId()).getBody();
         booking.setTotalPrice(ticketPrice.multiply(BigDecimal.valueOf(bookingRequestDto.getTotalSeats())));
+
+        return repository.save(booking);
+    }
+
+    @Transactional
+    public Booking updateStatus(String referenceNumber, HttpStatus paymentResponse) {
+        Booking booking = findByReferenceNumber(referenceNumber);
+
+        if (asList(OK, ACCEPTED).contains(paymentResponse)) {
+            booking.setStatus(CONFIRMED);
+        } else {
+            booking.setStatus(PAYMENT_FAILED);
+        }
 
         return repository.save(booking);
     }

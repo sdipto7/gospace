@@ -21,7 +21,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.isNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -145,6 +147,19 @@ public class BookingController {
                         .buildAndExpand(booking.getId())
                         .toUri())
                 .build();
+    }
+
+    @PostMapping(value = "/payment", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Booking> makePayment(@RequestBody Map<String, String> paymentDto) {
+        String referenceNumber = paymentDto.get("referenceNumber");
+        BigDecimal totalPrice = new BigDecimal(paymentDto.get("totalPrice"));
+
+        //call third-party payment-gateway api from here and get HTTP response status OK or ACCEPTED if payment is successful
+        HttpStatus paymentResponse = HttpStatus.OK;
+
+        Booking booking = service.updateStatus(referenceNumber, paymentResponse);
+
+        return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
