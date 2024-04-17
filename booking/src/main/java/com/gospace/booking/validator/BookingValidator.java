@@ -10,6 +10,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import static com.gospace.booking.util.ServletUtil.isPutRequest;
+import static java.lang.Boolean.FALSE;
 import static java.util.Objects.isNull;
 
 /**
@@ -37,7 +38,8 @@ public class BookingValidator implements Validator {
             validateBooking(bookingRequestDto, errors);
         }
 
-        if (bookingRequestDto.getTripId() == 0 || isNull(spaceTripProxy.getSpaceTripDetailsDto(bookingRequestDto.getTripId()).getBody())) {
+        Boolean hasSpaceTrip = spaceTripProxy.hasSpaceTrip(bookingRequestDto.getTripId()).getBody();
+        if (bookingRequestDto.getTripId() == 0 || FALSE.equals(hasSpaceTrip)) {
             errors.rejectValue("tripId",
                     "valid.booking.invalid.trip.id",
                     "Please provide a valid SpaceTrip ID! SpaceTrip not found by the given identifier");

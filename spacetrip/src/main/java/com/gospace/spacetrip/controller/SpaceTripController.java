@@ -74,9 +74,21 @@ public class SpaceTripController {
     }
 
     @ResponseBody
+    @GetMapping("/proxy/v1/exists/{id}")
+    public ResponseEntity<Boolean> hasSpaceTrip(@PathVariable int id) {
+        SpaceTrip spaceTrip = service.find(id);
+
+        log.info("[API:SPACETRIP:PROXY:V1:EXISTS] SpaceTrip with ID: {}, spaceTrip: {}", id, spaceTrip);
+
+        return new ResponseEntity<>(nonNull(spaceTrip), HttpStatus.OK);
+    }
+
+    @ResponseBody
     @GetMapping("/proxy/v1/details/{id}")
     public ResponseEntity<SpaceTripDetailsDto> getSpaceTripDetailsDto(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
+
+        log.info("[API:SPACETRIP:PROXY:V1:DETAILS] SpaceTrip with ID: {}, spaceTrip: {}", id, spaceTrip);
 
         return new ResponseEntity<>(nonNull(spaceTrip) ? helper.getSpaceTripDetailsDto(spaceTrip) : null, HttpStatus.OK);
     }
@@ -86,13 +98,9 @@ public class SpaceTripController {
     public ResponseEntity<Integer> getSpaceTripAvailableSeats(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
 
-        if (isNull(spaceTrip)) {
-            log.info("[API:SPACETRIP:SHOW-AVAILABLE-SEAT] Error while processing SpaceTrip show with ID: {}", id);
+        log.info("[API:SPACETRIP:PROXY:V1:AVAILABLE-SEATS] SpaceTrip with ID: {}, spaceTrip: {}", id, spaceTrip);
 
-            throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip available seat found for the id: %d", id));
-        }
-
-        return new ResponseEntity<>(spaceTrip.getAvailableSeats(), HttpStatus.OK);
+        return new ResponseEntity<>(nonNull(spaceTrip) ? spaceTrip.getAvailableSeats() : null, HttpStatus.OK);
     }
 
     @ResponseBody
@@ -100,13 +108,9 @@ public class SpaceTripController {
     public ResponseEntity<BigDecimal> getSpaceTripPrice(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);
 
-        if (isNull(spaceTrip)) {
-            log.info("[API:SPACETRIP:SHOW-PRICE] Error while processing SpaceTrip show with ID: {}", id);
+        log.info("[API:SPACETRIP:PROXY:V1:PRICE] SpaceTrip with ID: {}, spaceTrip: {}", id, spaceTrip);
 
-            throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip ticket price found for the id: %d", id));
-        }
-
-        return new ResponseEntity<>(spaceTrip.getTicketPrice(), HttpStatus.OK);
+        return new ResponseEntity<>(nonNull(spaceTrip) ? spaceTrip.getTicketPrice() : null, HttpStatus.OK);
     }
 
     @ResponseBody

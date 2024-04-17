@@ -12,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import static com.gospace.spacetrip.util.ServletUtil.isPutRequest;
+import static java.lang.Boolean.FALSE;
 import static java.util.Objects.isNull;
 
 /**
@@ -41,15 +42,16 @@ public class SpaceTripValidator implements Validator {
             validateSpaceTrip(spaceTripDto, errors);
         }
 
-        if (spaceTripDto.getDestinationId() == 0 || isNull(explorationProxy.getDestinationDto(spaceTripDto.getDestinationId()).getBody())) {
+        Boolean hasDestination = explorationProxy.hasDestination(spaceTripDto.getDestinationId()).getBody();
+        if (spaceTripDto.getDestinationId() == 0 || FALSE.equals(hasDestination)) {
             errors.rejectValue("destinationId",
                     "valid.spacetrip.invalid.destination.id",
                     "Please provide a valid Destination ID! Destination not found by the given identifier");
             return;
         }
 
-        SpaceCraftDto spaceCraftDto = spaceCraftProxy.getSpaceCraftDto(spaceTripDto.getSpaceCraftId()).getBody();
-        if (spaceTripDto.getSpaceCraftId() == 0 || isNull(spaceCraftDto)) {
+        Boolean hasSpaceCraft = spaceCraftProxy.hasSpaceCraft(spaceTripDto.getSpaceCraftId()).getBody();
+        if (spaceTripDto.getSpaceCraftId() == 0 || FALSE.equals(hasSpaceCraft)) {
             errors.rejectValue("spaceCraftId",
                     "valid.spacetrip.invalid.spacecraft.id",
                     "Please provide a valid Spacecraft ID! SpaceCraft not found by the given identifier");
@@ -60,7 +62,7 @@ public class SpaceTripValidator implements Validator {
 
         validateDateRange(spaceTripDto, errors);
 
-        validateSeatCapacity(spaceTripDto, spaceCraftDto, errors);
+        validateSeatCapacity(spaceTripDto, errors);
     }
 
     private void validateSpaceTrip(SpaceTripDto spaceTripDto, Errors errors) {
@@ -103,7 +105,9 @@ public class SpaceTripValidator implements Validator {
         }
     }
 
-    private void validateSeatCapacity(SpaceTripDto spaceTripDto, SpaceCraftDto spaceCraftDto, Errors errors) {
+    private void validateSeatCapacity(SpaceTripDto spaceTripDto, Errors errors) {
+        SpaceCraftDto spaceCraftDto = spaceCraftProxy.getSpaceCraftDto(spaceTripDto.getSpaceCraftId()).getBody();
+
         if (spaceTripDto.getTotalSeats() != spaceCraftDto.getPassengerCapacity()) {
             errors.rejectValue("totalSeats", "valid.spacetrip.total.seats",
                     "Total seat of a space trip must be equal to the passenger capacity of the space craft");

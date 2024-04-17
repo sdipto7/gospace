@@ -60,9 +60,21 @@ public class DestinationController {
     }
 
     @ResponseBody
+    @GetMapping("/proxy/v1/exists/{id}")
+    public ResponseEntity<Boolean> hasDestination(@PathVariable int id) {
+        Destination destination = service.find(id);
+
+        log.info("[API:DESTINATION:PROXY:V1:EXISTS] Destination with ID: {}, destination: {}", id, destination);
+
+        return new ResponseEntity<>(nonNull(destination), HttpStatus.OK);
+    }
+
+    @ResponseBody
     @GetMapping("/proxy/v1/{id}")
     public ResponseEntity<DestinationDto> getDestinationDto(@PathVariable int id) {
         Destination destination = service.find(id);
+
+        log.info("[API:DESTINATION:PROXY:V1] Destination with ID: {}, destination: {}", id, destination);
 
         return new ResponseEntity<>(nonNull(destination) ? helper.getDestinationDto(destination) : null, HttpStatus.OK);
     }
@@ -72,13 +84,9 @@ public class DestinationController {
     public ResponseEntity<String> getDestinationName(@PathVariable int id) {
         Destination destination = service.find(id);
 
-        if (isNull(destination)) {
-            log.info("[API:DESTINATION:SHOW-NAME] Error while processing Destination show with ID: {}", id);
+        log.info("[API:DESTINATION:PROXY:V1:NAME] Destination with ID: {}, destination: {}", id, destination);
 
-            throw new DestinationNotFoundException(String.format("Invalid id! No Destination name found for the id: %d", id));
-        }
-
-        return new ResponseEntity<>(destination.getName(), HttpStatus.OK);
+        return new ResponseEntity<>(nonNull(destination) ? destination.getName() : null, HttpStatus.OK);
     }
 
     @ResponseBody

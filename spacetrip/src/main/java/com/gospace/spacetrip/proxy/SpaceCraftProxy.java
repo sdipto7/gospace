@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public interface SpaceCraftProxy {
 
     @ResponseBody
+    @GetMapping("/api/spacecraft/proxy/v1/exists/{id}")
+    ResponseEntity<Boolean> hasSpaceCraft(@PathVariable int id);
+
+    @ResponseBody
     @GetMapping("/api/spacecraft/proxy/v1/{id}")
     ResponseEntity<SpaceCraftDto> getSpaceCraftDto(@PathVariable int id);
 

@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import static com.gospace.booking.domain.BookingStatus.*;
 import static java.util.Arrays.asList;
+import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -75,7 +76,11 @@ public class BookingService {
         booking.setStatus(PROCESSING_PAYMENT);
 
         BigDecimal ticketPrice = spaceTripProxy.getSpaceTripPrice(bookingRequestDto.getTripId()).getBody();
-        booking.setTotalPrice(ticketPrice.multiply(BigDecimal.valueOf(bookingRequestDto.getTotalSeats())));
+        booking.setTotalPrice(
+                nonNull(ticketPrice)
+                        ? ticketPrice.multiply(BigDecimal.valueOf(bookingRequestDto.getTotalSeats()))
+                        : new BigDecimal("0.0")
+        );
 
         return repository.save(booking);
     }

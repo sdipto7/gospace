@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public interface ExplorationProxy {
 
     @ResponseBody
+    @GetMapping("/api/destination/proxy/v1/exists/{id}")
+    ResponseEntity<Boolean> hasDestination(@PathVariable int id);
+
+    @ResponseBody
     @GetMapping("/api/destination/proxy/v1/{id}")
     ResponseEntity<DestinationDto> getDestinationDto(@PathVariable int id);
 

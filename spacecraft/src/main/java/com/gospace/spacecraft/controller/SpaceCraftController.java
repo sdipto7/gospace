@@ -58,9 +58,21 @@ public class SpaceCraftController {
     }
 
     @ResponseBody
+    @GetMapping("/proxy/v1/exists/{id}")
+    public ResponseEntity<Boolean> hasSpaceCraft(@PathVariable int id) {
+        SpaceCraft spaceCraft = service.find(id);
+
+        log.info("[API:SPACECRAFT:PROXY:V1:EXISTS] SpaceCraft with ID: {}, spaceCraft: {}", id, spaceCraft);
+
+        return new ResponseEntity<>(nonNull(spaceCraft), HttpStatus.OK);
+    }
+
+    @ResponseBody
     @GetMapping("/proxy/v1/{id}")
     public ResponseEntity<SpaceCraftDto> getSpaceCraftDto(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
+
+        log.info("[API:SPACECRAFT:PROXY:V1] SpaceCraft with ID: {}, spaceCraft: {}", id, spaceCraft);
 
         return new ResponseEntity<>(nonNull(spaceCraft) ? helper.getSpaceCraftDto(spaceCraft) : null, HttpStatus.OK);
     }
@@ -70,13 +82,9 @@ public class SpaceCraftController {
     public ResponseEntity<String> getSpaceCraftName(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
 
-        if (isNull(spaceCraft)) {
-            log.info("[API:SPACECRAFT:SHOW-NAME] Error while processing SpaceCraft show with ID: {}", id);
+        log.info("[API:SPACECRAFT:PROXY:V1:NAME] SpaceCraft with ID: {}, spaceCraft: {}", id, spaceCraft);
 
-            throw new SpaceCraftNotFoundException(String.format("Invalid id! No SpaceCraft name found for the id: %d", id));
-        }
-
-        return new ResponseEntity<>(spaceCraft.getName(), HttpStatus.OK);
+        return new ResponseEntity<>(nonNull(spaceCraft) ? spaceCraft.getName() : null, HttpStatus.OK);
     }
 
     @ResponseBody

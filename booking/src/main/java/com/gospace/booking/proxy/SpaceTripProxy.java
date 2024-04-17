@@ -17,6 +17,10 @@ import java.math.BigDecimal;
 public interface SpaceTripProxy {
 
     @ResponseBody
+    @GetMapping("/api/spacetrip/proxy/v1/exists/{id}")
+    ResponseEntity<Boolean> hasSpaceTrip(@PathVariable int id);
+
+    @ResponseBody
     @GetMapping("/api/spacetrip/proxy/v1/details/{id}")
     ResponseEntity<SpaceTripDetailsDto> getSpaceTripDetailsDto(@PathVariable int id);
 
