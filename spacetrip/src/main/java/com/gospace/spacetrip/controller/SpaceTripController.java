@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -168,6 +169,27 @@ public class SpaceTripController {
         SpaceTrip spaceTrip = service.saveOrUpdate(spaceTripDto);
 
         log.info("[API:SPACETRIP:UPDATE] Successfully processed SpaceTrip update, Response: {}", spaceTrip);
+
+        return ResponseEntity
+                .created(ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(spaceTrip.getId())
+                        .toUri())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/proxy/v1/update-available-seats", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateAvailableSeats(@RequestBody Map<String, Integer> spaceTripBookedSeatMap) {
+        int spaceTripId = spaceTripBookedSeatMap.get("spaceTripId");
+        int bookedSeats = spaceTripBookedSeatMap.get("bookedSeats");
+
+        log.info("[API:SPACETRIP:PROXY:V1:UPDATE-AVAILABLE-SEATS] SpaceTrip with ID: {}, Booked seats: {}", spaceTripId, bookedSeats);
+
+        SpaceTrip spaceTrip = service.updateAvailableSeats(spaceTripId, bookedSeats);
+
+        log.info("[API:SPACETRIP:PROXY:V1:UPDATE-AVAILABLE-SEATS] Successfully processed SpaceTrip available seats update, Response: {}", spaceTrip);
 
         return ResponseEntity
                 .created(ServletUriComponentsBuilder

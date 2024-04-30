@@ -70,5 +70,13 @@ Request-body sample:
     "version": 1
 }
 
+api/booking/payment
+
+Request-body sample:
+{
+    "referenceNumber": "5e01d5c2-6a52-42ba-93c6-ff82c3fdda0d",
+    "totalPrice": 48000000.0000000000
+}
+
 4.Delete Requests:
 /api/booking/{id}

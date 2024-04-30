@@ -64,6 +64,15 @@ public class SpaceTripService {
     }
 
     @Transactional
+    public SpaceTrip updateAvailableSeats(int spaceTripId, int bookedSeats) {
+        SpaceTrip spaceTrip = find(spaceTripId);
+
+        spaceTrip.setAvailableSeats(spaceTrip.getAvailableSeats() - bookedSeats);
+
+        return repository.save(spaceTrip);
+    }
+
+    @Transactional
     public void delete(SpaceTrip spaceTrip) {
         repository.delete(spaceTrip);
     }

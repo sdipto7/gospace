@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.gospace.booking.domain.BookingStatus.*;
 import static java.util.Arrays.asList;
@@ -91,6 +89,13 @@ public class BookingService {
 
         if (asList(OK, ACCEPTED).contains(paymentResponse)) {
             booking.setStatus(CONFIRMED);
+
+            Map<String, Integer> spaceTripBookedSeatMap = new HashMap<>();
+            spaceTripBookedSeatMap.put("spaceTripId", booking.getTripId());
+            spaceTripBookedSeatMap.put("bookedSeats", booking.getTotalSeats());
+
+            spaceTripProxy.updateAvailableSeats(spaceTripBookedSeatMap);
+
         } else {
             booking.setStatus(PAYMENT_FAILED);
         }
