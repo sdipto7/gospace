@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author rumidipto
  * @since 4/16/24
  */
-@FeignClient(name = "spacecraft", url = "localhost:8070")
+@FeignClient(name = "spacecraft")
 public interface SpaceCraftProxy {
 
     @ResponseBody

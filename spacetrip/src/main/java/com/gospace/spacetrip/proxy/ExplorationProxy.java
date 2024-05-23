@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author rumidipto
  * @since 4/7/24
  */
-@FeignClient(name = "exploration", url = "localhost:8090")
+@FeignClient(name = "exploration")
 public interface ExplorationProxy {
 
     @ResponseBody

@@ -12,7 +12,7 @@ import java.util.Map;
  * @author rumidipto
  * @since 4/14/24
  */
-@FeignClient(name = "spacetrip", url = "localhost:8080")
+@FeignClient(name = "spacetrip")
 public interface SpaceTripProxy {
 
     @ResponseBody
