@@ -1,0 +1,245 @@
+Eureka Server:
+http://localhost:8761/
+
+SpaceCraft Service URLs using API gateway:
+
+1. Get Requests:
+http://localhost:8765/api/spacecraft/{id}
+http://localhost:8765/api/spacecraft/all
+
+response-body sample:
+{
+    "name": "Star Voyager",
+    "manufacturer": "Space X",
+    "manufactureDate": "2021-03-05",
+    "crewCapacity": 250,
+    "passengerCapacity": 1600
+}
+
+2. Post Requests:
+http://localhost:8765/api/spacecraft
+=> request-body sample:
+{
+    "name": "Star Voyager II",
+    "manufacturer": "Space X",
+    "manufactureDate": "2021-03-05",
+    "crewCapacity": 250,
+    "passengerCapacity": 1600
+}
+
+3. Put Requests:
+http://localhost:8765/api/spacecraft
+=> request-body sample:
+{
+    "id": 6,
+    "name": "Cosmic Explorer",
+    "manufacturer": "Space X",
+    "manufactureDate": "2022-04-05",
+    "crewCapacity": 250,
+    "passengerCapacity": 1600,
+    "version": 2
+}
+
+4. Delete Requests:
+http://localhost:8765/api/spacecraft/{id}
+
+============================================================================
+
+Exploration Service URLs using API gateway:
+
+1. Get Requests:
+http://localhost:8765/api/destination/{id}
+http://localhost:8765/api/destination/all
+http://localhost:8765/api/destination/all/{type}
+
+response-body sample:
+{
+    "name": "Mars",
+    "celestialBodyType": "Planet",
+    "description": "Description of planet Mars",
+    "surfaceFeatures": "Surface Features of planet Mars",
+    "atmosphere": "Atmosphere composition of Mars",
+    "distanceFromEarth": 2.114114,
+    "diameter": 6779,
+    "mass": 6.39E+23,
+    "gravity": 3.71,
+    "minimumTemperature": -153,
+    "maximumTemperature": 2E+1
+}
+[units => distanceFromEarth: astronomical unit, diameter: km, mass: kg, gravity: ms^-2, temperature: celsius]
+
+2. Post Requests:
+http://localhost:8765/api/destination
+=> request-body sample:
+{
+    "name": "Titan",
+    "celestialBodyType": "Moon",
+    "description": "Description of Titan. It's one of the 82 moons of Planet Saturn",
+    "surfaceFeatures": "Surface Features of Titan",
+    "atmosphere": "Atmosphere composition of Titan",
+    "distanceFromEarth": 8.021504546722,
+    "diameter": 5149.5,
+    "mass": 1.35E+23,
+    "gravity": 1.352,
+    "minimumTemperature": -179.6,
+    "maximumTemperature": -179.6
+}
+
+3. Put Requests:
+http://localhost:8765/api/destination
+=> request-body sample:
+{
+    "id": 8,
+    "name": "Titan",
+    "celestialBodyType": "Moon",
+    "description": "Description of Titan. It's one of the 82 moons of Planet Saturn",
+    "surfaceFeatures": "Surface Features of Titan",
+    "atmosphere": "Atmosphere composition of Titan",
+    "distanceFromEarth": 8.021504546722,
+    "diameter": 5149.5,
+    "mass": 1.35E+23,
+    "gravity": 1.352,
+    "minimumTemperature": -179.6,
+    "maximumTemperature": -179.6,
+    "version": 1
+}
+
+4. Delete Requests:
+http://localhost:8765/api/destination/{id}
+
+============================================================================
+
+
+SpaceTrip Service URLs using API gateway:
+
+1. Get Requests:
+http://localhost:8765/api/spacetrip/{id}
+http://localhost:8765/api/spacetrip/details/{id}
+http://localhost:8765/api/spacetrip/available-trips
+
+response-body sample:
+{
+    "destinationName": "Titan",
+    "spaceCraftName": "Galactica Shuttle",
+    "departureTime": "2028-02-07T06:00:00",
+    "estimatedArrivalTime": "2064-07-26T10:20:00",
+    "tripDuration": "36 years 5 months 19 days 4 hours 20 minutes 0 seconds",
+    "ticketPrice": 9500000.00,
+    "totalSeats": 1500,
+    "availableSeats": 1500
+}
+
+2. Post Requests:
+http://localhost:8765/api/spacetrip
+=> request-body sample:
+{
+    "destinationId": 1,
+    "spaceCraftId": 6,
+    "departureTime": "2033-05-15T06:00:00",
+    "estimatedArrivalTime": "2083-11-12T10:20:00",
+    "ticketPrice": 22000000.00,
+    "totalSeats": 2600,
+    "availableSeats": 2600
+}
+
+3. Put Requests:
+http://localhost:8765/api/spacetrip
+=> request-body sample:
+{
+    "id": 7,
+    "destinationId": 1,
+    "spaceCraftId": 6,
+    "departureTime": "2033-05-15T06:00:00",
+    "estimatedArrivalTime": "2083-11-12T10:20:00",
+    "ticketPrice": 32000000.00,
+    "totalSeats": 2600,
+    "availableSeats": 600,
+    "version": 0
+}
+
+4. Delete Requests:
+http://localhost:8765/api/spacetrip/{id}
+
+============================================================================
+
+Booking Service URLs using API gateway:
+
+1. Get Requests:
+http://localhost:8765/api/booking/{id}
+http://localhost:8765/api/booking?referenceNumber=79676f06-7e03-4d91-9175-d24dc2bd68c1
+http://localhost:8765/api/booking/all
+http://localhost:8765/api/booking/all/{status}
+
+Response-body sample:
+{
+    "spaceTripDetailsDto": {
+        "spaceCraftDto": {
+            "name": "Cosmic Explorer",
+            "manufacturer": "Space X",
+            "manufactureDate": "2022-04-05",
+            "crewCapacity": 250,
+            "passengerCapacity": 1600
+        },
+        "destinationDto": {
+            "name": "Mars",
+            "celestialBodyType": "Planet",
+            "description": "Description of planet Mars",
+            "surfaceFeatures": "Surface Features of planet Mars",
+            "atmosphere": "Atmosphere composition of Mars",
+            "distanceFromEarth": 2.114114,
+            "diameter": 6779,
+            "mass": 6.39E+23,
+            "gravity": 3.71,
+            "minimumTemperature": -153,
+            "maximumTemperature": 2E+1
+        },
+        "departureTime": "2033-05-15T06:00:00",
+        "estimatedArrivalTime": "2103-11-12T10:20:00",
+        "tripDuration": "70 years 5 months 28 days 4 hours 20 minutes 0 seconds",
+        "ticketPrice": 1550000.00,
+        "totalSeats": 1600,
+        "availableSeats": 100
+    },
+    "referenceNumber": "79676f06-7e03-4d91-9175-d24dc2bd68c1",
+    "passengerName": "Dipto",
+    "passengerEmail": "dipto@gmail.com",
+    "passengerPhone": "+8801873308809",
+    "totalSeats": 2,
+    "totalPrice": 24000000.0000000000,
+    "status": "Confirmed"
+}
+
+2. Post Requests:
+http://localhost:8765/api/booking
+Request-body sample:
+{
+    "tripId": 1,
+    "passengerName": "shahriar rumi dipto",
+    "passengerEmail": "shahriarrumidipto7@gmail.com",
+    "passengerPhone": "+8801873308989",
+    "totalSeats": 4
+}
+
+3. Put Requests:
+http://localhost:8765/api/booking
+Request-body sample:
+{
+    "id": 2,
+    "tripId": 1,
+    "referenceNumber": "3e15832b-f86f-492d-9814-46479105560a",
+    "passengerName": "shahriar rumi dipto",
+    "passengerEmail": "shahriarrumidipto@gmail.com",
+    "passengerPhone": "+8801873308889",
+    "totalSeats": 3,
+    "version": 1
+}
+
+http://localhost:8765/api/booking/payment
+Request-body sample:
+{
+    "referenceNumber": "5e01d5c2-6a52-42ba-93c6-ff82c3fdda0d",
+    "totalPrice": 48000000.0000000000
+}
+
+4.Delete Requests:
+http://localhost:8765/api/booking/{id}
