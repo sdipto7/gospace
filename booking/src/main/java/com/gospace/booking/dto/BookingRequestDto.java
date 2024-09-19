@@ -1,22 +1,21 @@
 package com.gospace.booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
-
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 /**
  * @author rumidipto
  * @since 3/29/24
  */
 @Getter
+@Setter
 @Builder
 @ToString
 public class BookingRequestDto implements Serializable {
@@ -24,7 +23,6 @@ public class BookingRequestDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty(access = WRITE_ONLY)
     private int id;
 
     private int tripId;
@@ -48,7 +46,6 @@ public class BookingRequestDto implements Serializable {
 
     private String status; //status will be updated based on payment service later.
 
-    @JsonProperty(access = WRITE_ONLY)
     private int version;
 
     @JsonIgnore

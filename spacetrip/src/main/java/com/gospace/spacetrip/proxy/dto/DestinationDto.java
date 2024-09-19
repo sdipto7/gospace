@@ -2,6 +2,7 @@ package com.gospace.spacetrip.proxy.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serial;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * @since 3/25/24
  */
 @Getter
+@Setter
 @Builder
 @ToString
 public class DestinationDto implements Serializable {

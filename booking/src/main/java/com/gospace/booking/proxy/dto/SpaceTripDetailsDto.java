@@ -2,6 +2,7 @@ package com.gospace.booking.proxy.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @since 4/7/24
  */
 @Getter
+@Setter
 @Builder
 @ToString
 public class SpaceTripDetailsDto implements Serializable {

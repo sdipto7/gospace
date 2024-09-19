@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,7 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -43,7 +43,6 @@ public class SpaceCraftController {
 
     private static final Logger log = LoggerFactory.getLogger(SpaceCraftController.class);
 
-    @ResponseBody
     @GetMapping("/{id}")
     public ResponseEntity<SpaceCraftDto> show(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
@@ -54,48 +53,49 @@ public class SpaceCraftController {
             throw new SpaceCraftNotFoundException(String.format("Invalid id! No SpaceCraft found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getSpaceCraftDto(spaceCraft), HttpStatus.OK);
+        return ResponseEntity.ok(helper.getSpaceCraftDto(spaceCraft));
     }
 
-    @ResponseBody
     @GetMapping("/proxy/v1/exists/{id}")
     public ResponseEntity<Boolean> hasSpaceCraft(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
 
         log.info("[API:SPACECRAFT:PROXY:V1:EXISTS] SpaceCraft with ID: {}, spaceCraft: {}", id, spaceCraft);
 
-        return new ResponseEntity<>(nonNull(spaceCraft), HttpStatus.OK);
+        return ResponseEntity.ok(nonNull(spaceCraft));
     }
 
-    @ResponseBody
     @GetMapping("/proxy/v1/{id}")
     public ResponseEntity<SpaceCraftDto> getSpaceCraftDto(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
 
         log.info("[API:SPACECRAFT:PROXY:V1] SpaceCraft with ID: {}, spaceCraft: {}", id, spaceCraft);
 
-        return new ResponseEntity<>(nonNull(spaceCraft) ? helper.getSpaceCraftDto(spaceCraft) : null, HttpStatus.OK);
+        return isNull(spaceCraft)
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(helper.getSpaceCraftDto(spaceCraft));
     }
 
-    @ResponseBody
     @GetMapping("/proxy/v1/name/{id}")
     public ResponseEntity<String> getSpaceCraftName(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);
 
         log.info("[API:SPACECRAFT:PROXY:V1:NAME] SpaceCraft with ID: {}, spaceCraft: {}", id, spaceCraft);
 
-        return new ResponseEntity<>(nonNull(spaceCraft) ? spaceCraft.getName() : null, HttpStatus.OK);
+        return isNull(spaceCraft)
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(spaceCraft.getName());
     }
 
-    @ResponseBody
     @GetMapping("/all")
     public ResponseEntity<List<SpaceCraftDto>> showAll() {
         List<SpaceCraftDto> spaceCraftDtoList = helper.getSpaceCraftDtoList(service.findAll());
 
-        return new ResponseEntity<>(spaceCraftDtoList, spaceCraftDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return spaceCraftDtoList.isEmpty()
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(spaceCraftDtoList);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody SpaceCraftDto spaceCraftDto, Errors errors) {
 
@@ -123,7 +123,6 @@ public class SpaceCraftController {
                 ).build();
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@Valid @RequestBody SpaceCraftDto spaceCraftDto, Errors errors) {
 
@@ -142,16 +141,10 @@ public class SpaceCraftController {
 
         log.info("[API:SPACECRAFT:UPDATE] Successfully processed SpaceCraft update, Response: {}", spaceCraft);
 
-        return ResponseEntity
-                .created(ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(spaceCraft.getId())
-                        .toUri())
-                .build();
+        return ResponseEntity.ok(helper.getSpaceCraftDto(spaceCraft));
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         SpaceCraft spaceCraft = service.find(id);

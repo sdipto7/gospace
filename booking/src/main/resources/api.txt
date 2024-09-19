@@ -6,6 +6,7 @@
 
 Response-body sample:
 {
+    "id": 1,
     "spaceTripDetailsDto": {
         "spaceCraftDto": {
             "name": "Cosmic Explorer",
@@ -40,7 +41,8 @@ Response-body sample:
     "passengerPhone": "+8801873308809",
     "totalSeats": 2,
     "totalPrice": 24000000.0000000000,
-    "status": "Confirmed"
+    "status": "Confirmed",
+    "version": 0
 }
 
 2. Post Requests:

@@ -9,11 +9,13 @@ http://localhost:8765/api/spacecraft/all
 
 response-body sample:
 {
+    "id": 1,
     "name": "Star Voyager",
     "manufacturer": "Space X",
     "manufactureDate": "2021-03-05",
     "crewCapacity": 250,
-    "passengerCapacity": 1600
+    "passengerCapacity": 1600,
+    "version": 0
 }
 
 2. Post Requests:
@@ -54,6 +56,7 @@ http://localhost:8765/api/destination/all/{type}
 
 response-body sample:
 {
+    "id": 1,
     "name": "Mars",
     "celestialBodyType": "Planet",
     "description": "Description of planet Mars",
@@ -64,7 +67,8 @@ response-body sample:
     "mass": 6.39E+23,
     "gravity": 3.71,
     "minimumTemperature": -153,
-    "maximumTemperature": 2E+1
+    "maximumTemperature": 2E+1,
+    "version": 0
 }
 [units => distanceFromEarth: astronomical unit, diameter: km, mass: kg, gravity: ms^-2, temperature: celsius]
 
@@ -119,6 +123,7 @@ http://localhost:8765/api/spacetrip/available-trips
 
 response-body sample:
 {
+    "id": 1,
     "destinationName": "Titan",
     "spaceCraftName": "Galactica Shuttle",
     "departureTime": "2028-02-07T06:00:00",
@@ -126,7 +131,8 @@ response-body sample:
     "tripDuration": "36 years 5 months 19 days 4 hours 20 minutes 0 seconds",
     "ticketPrice": 9500000.00,
     "totalSeats": 1500,
-    "availableSeats": 1500
+    "availableSeats": 1500,
+    "version": 0
 }
 
 2. Post Requests:
@@ -172,6 +178,7 @@ http://localhost:8765/api/booking/all/{status}
 
 Response-body sample:
 {
+    "id": 1,
     "spaceTripDetailsDto": {
         "spaceCraftDto": {
             "name": "Cosmic Explorer",
@@ -206,7 +213,8 @@ Response-body sample:
     "passengerPhone": "+8801873308809",
     "totalSeats": 2,
     "totalPrice": 24000000.0000000000,
-    "status": "Confirmed"
+    "status": "Confirmed",
+    "version": 0
 }
 
 2. Post Requests:

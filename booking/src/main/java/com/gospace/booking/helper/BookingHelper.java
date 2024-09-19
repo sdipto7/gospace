@@ -24,6 +24,7 @@ public class BookingHelper {
         SpaceTripDetailsDto spaceTripDetailsDto = spaceTripProxy.getSpaceTripDetailsDto(booking.getTripId()).getBody();
 
         return BookingResponseDto.builder()
+                .id(booking.getId())
                 .spaceTripDetailsDto(spaceTripDetailsDto)
                 .referenceNumber(booking.getReferenceNumber())
                 .passengerName(booking.getPassengerDetails().getName())
@@ -32,13 +33,14 @@ public class BookingHelper {
                 .totalSeats(booking.getTotalSeats())
                 .totalPrice(booking.getTotalPrice())
                 .status(booking.getStatus().getLabel())
+                .version(booking.getVersion())
                 .build();
     }
 
     public List<BookingResponseDto> getBookingResponseDtoList(List<Booking> bookingList) {
 
         return bookingList.stream()
-                .map(booking -> getBookingResponseDto(booking))
+                .map(this::getBookingResponseDto)
                 .collect(Collectors.toList());
     }
 }

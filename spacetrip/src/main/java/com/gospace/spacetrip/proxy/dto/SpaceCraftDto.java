@@ -2,6 +2,7 @@ package com.gospace.spacetrip.proxy.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
  * @since 3/18/24
  */
 @Getter
+@Setter
 @Builder
 @ToString
 public class SpaceCraftDto implements Serializable {

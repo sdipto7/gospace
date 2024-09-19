@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Objects.isNull;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -47,7 +48,6 @@ public class BookingController {
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
-    @ResponseBody
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponseDto> show(@PathVariable int id) {
         Booking booking = service.find(id);
@@ -58,10 +58,9 @@ public class BookingController {
             throw new BookingNotFoundException(String.format("Invalid id! No Booking found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getBookingResponseDto(booking), HttpStatus.OK);
+        return ResponseEntity.ok(helper.getBookingResponseDto(booking));
     }
 
-    @ResponseBody
     @GetMapping
     public ResponseEntity<BookingResponseDto> showByReferenceNumber(@RequestParam String referenceNumber) {
         Booking booking = service.findByReferenceNumber(referenceNumber);
@@ -72,28 +71,29 @@ public class BookingController {
             throw new BookingNotFoundException(String.format("Invalid reference number! No Booking found for the ReferenceNumber: %s", referenceNumber));
         }
 
-        return new ResponseEntity<>(helper.getBookingResponseDto(booking), HttpStatus.OK);
+        return ResponseEntity.ok(helper.getBookingResponseDto(booking));
     }
 
-    @ResponseBody
     @GetMapping("/all")
     public ResponseEntity<List<BookingResponseDto>> showAll() {
         List<BookingResponseDto> bookingDtoList = helper.getBookingResponseDtoList(service.findAll());
 
-        return new ResponseEntity<>(bookingDtoList, bookingDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return bookingDtoList.isEmpty()
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(bookingDtoList);
     }
 
-    @ResponseBody
     @GetMapping("/all/{status}")
     public ResponseEntity<List<BookingResponseDto>> showAllByStatus(@PathVariable String status) {
         List<Booking> bookingList = service.findAllByStatus(BookingStatus.fromLabel(status));
 
         List<BookingResponseDto> bookingDtoList = helper.getBookingResponseDtoList(bookingList);
 
-        return new ResponseEntity<>(bookingDtoList, bookingDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return bookingDtoList.isEmpty()
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(bookingDtoList);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody BookingRequestDto bookingRequestDto, Errors errors) {
 
@@ -121,7 +121,19 @@ public class BookingController {
                 ).build();
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/payment", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Booking> makePayment(@RequestBody Map<String, String> paymentDto) {
+        String referenceNumber = paymentDto.get("referenceNumber");
+        BigDecimal totalPrice = new BigDecimal(paymentDto.get("totalPrice"));
+
+        //call third-party payment-gateway api from here and get HTTP response status OK or ACCEPTED if payment is successful
+        HttpStatus paymentResponse = HttpStatus.OK;
+
+        Booking booking = service.updateStatus(referenceNumber, paymentResponse);
+
+        return ResponseEntity.ok(booking);
+    }
+
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@Valid @RequestBody BookingRequestDto bookingRequestDto, Errors errors) {
 
@@ -140,29 +152,10 @@ public class BookingController {
 
         log.info("[API:BOOKING:UPDATE] Successfully processed Booking update, Response: {}", booking);
 
-        return ResponseEntity
-                .created(ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(booking.getId())
-                        .toUri())
-                .build();
+        return ResponseEntity.ok(helper.getBookingResponseDto(booking));
     }
 
-    @PostMapping(value = "/payment", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Booking> makePayment(@RequestBody Map<String, String> paymentDto) {
-        String referenceNumber = paymentDto.get("referenceNumber");
-        BigDecimal totalPrice = new BigDecimal(paymentDto.get("totalPrice"));
-
-        //call third-party payment-gateway api from here and get HTTP response status OK or ACCEPTED if payment is successful
-        HttpStatus paymentResponse = HttpStatus.OK;
-
-        Booking booking = service.updateStatus(referenceNumber, paymentResponse);
-
-        return new ResponseEntity<>(booking, HttpStatus.OK);
-    }
-
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Booking booking = service.find(id);

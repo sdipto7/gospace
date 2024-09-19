@@ -30,6 +30,7 @@ public class SpaceTripHelper {
     public SpaceTripDto getSpaceTripDto(SpaceTrip spaceTrip) {
 
         return SpaceTripDto.builder()
+                .id(spaceTrip.getId())
                 .destinationName(spaceTrip.getDestinationName())
                 .spaceCraftName(spaceTrip.getSpaceCraftName())
                 .departureTime(spaceTrip.getDepartureTime())
@@ -38,13 +39,14 @@ public class SpaceTripHelper {
                 .ticketPrice(spaceTrip.getTicketPrice())
                 .totalSeats(spaceTrip.getTotalSeats())
                 .availableSeats(spaceTrip.getAvailableSeats())
+                .version(spaceTrip.getVersion())
                 .build();
     }
 
     public List<SpaceTripDto> getSpaceTripDtoList(List<SpaceTrip> availableTripList) {
 
         return availableTripList.stream()
-                .map(spaceTrip -> getSpaceTripDto(spaceTrip))
+                .map(this::getSpaceTripDto)
                 .collect(toList());
     }
 
@@ -53,6 +55,7 @@ public class SpaceTripHelper {
         SpaceCraftDto spaceCraftDto = spaceCraftProxy.getSpaceCraftDto(spaceTrip.getSpaceCraftId()).getBody();
 
         return SpaceTripDetailsDto.builder()
+                .id(spaceTrip.getId())
                 .destinationDto(destinationDto)
                 .spaceCraftDto(spaceCraftDto)
                 .departureTime(spaceTrip.getDepartureTime())
@@ -61,6 +64,7 @@ public class SpaceTripHelper {
                 .ticketPrice(spaceTrip.getTicketPrice())
                 .totalSeats(spaceTrip.getTotalSeats())
                 .availableSeats(spaceTrip.getAvailableSeats())
+                .version(spaceTrip.getVersion())
                 .build();
     }
 }

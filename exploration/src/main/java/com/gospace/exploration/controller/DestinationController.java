@@ -13,17 +13,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
 import java.util.List;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -45,7 +44,6 @@ public class DestinationController {
 
     private static final Logger log = LoggerFactory.getLogger(DestinationController.class);
 
-    @ResponseBody
     @GetMapping("/{id}")
     public ResponseEntity<DestinationDto> show(@PathVariable int id) {
         Destination destination = service.find(id);
@@ -56,62 +54,62 @@ public class DestinationController {
             throw new DestinationNotFoundException(String.format("Invalid id! No Destination found for the id: %d", id));
         }
 
-        return new ResponseEntity<>(helper.getDestinationDto(destination), HttpStatus.OK);
+        return ResponseEntity.ok(helper.getDestinationDto(destination));
     }
 
-    @ResponseBody
     @GetMapping("/proxy/v1/exists/{id}")
     public ResponseEntity<Boolean> hasDestination(@PathVariable int id) {
         Destination destination = service.find(id);
 
         log.info("[API:DESTINATION:PROXY:V1:EXISTS] Destination with ID: {}, destination: {}", id, destination);
 
-        return new ResponseEntity<>(nonNull(destination), HttpStatus.OK);
+        return ResponseEntity.ok(nonNull(destination));
     }
 
-    @ResponseBody
     @GetMapping("/proxy/v1/{id}")
     public ResponseEntity<DestinationDto> getDestinationDto(@PathVariable int id) {
         Destination destination = service.find(id);
 
         log.info("[API:DESTINATION:PROXY:V1] Destination with ID: {}, destination: {}", id, destination);
 
-        return new ResponseEntity<>(nonNull(destination) ? helper.getDestinationDto(destination) : null, HttpStatus.OK);
+        return isNull(destination)
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(helper.getDestinationDto(destination));
     }
 
-    @ResponseBody
     @GetMapping("/proxy/v1/name/{id}")
     public ResponseEntity<String> getDestinationName(@PathVariable int id) {
         Destination destination = service.find(id);
 
         log.info("[API:DESTINATION:PROXY:V1:NAME] Destination with ID: {}, destination: {}", id, destination);
 
-        return new ResponseEntity<>(nonNull(destination) ? destination.getName() : null, HttpStatus.OK);
+        return isNull(destination)
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(destination.getName());
     }
 
-    @ResponseBody
     @GetMapping("/all")
     public ResponseEntity<List<DestinationDto>> showAll() {
         List<DestinationDto> destinationDtoList = helper.getDestinationDtoList(service.findAll());
 
-        return new ResponseEntity<>(destinationDtoList,
-                destinationDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return destinationDtoList.isEmpty()
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(destinationDtoList);
     }
 
-    @ResponseBody
     @GetMapping("/all/{type}")
     public ResponseEntity<List<DestinationDto>> showAllByType(@PathVariable(name = "type") String celestialBodyType) {
         List<Destination> destinationList = service.findAllByCelestialBodyType(CelestialBodyType.fromLabel(celestialBodyType));
 
         List<DestinationDto> destinationDtoList = helper.getDestinationDtoList(destinationList);
 
-        return new ResponseEntity<>(destinationDtoList,
-                destinationDtoList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+        return destinationDtoList.isEmpty()
+                ? new ResponseEntity<>(NO_CONTENT)
+                : ResponseEntity.ok(destinationDtoList);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@Valid @RequestBody DestinationDto destinationDto, Errors errors) throws IOException {
+    public ResponseEntity<?> save(@Valid @RequestBody DestinationDto destinationDto, Errors errors) {
 
         validator.validate(destinationDto, errors);
 
@@ -137,7 +135,6 @@ public class DestinationController {
                 ).build();
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@Valid @RequestBody DestinationDto destinationDto, Errors errors) {
 
@@ -156,16 +153,10 @@ public class DestinationController {
 
         log.info("[API:DESTINATION:UPDATE] Successfully processed Destination update, Response: {}", destination);
 
-        return ResponseEntity
-                .created(ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(destination.getId())
-                        .toUri())
-                .build();
+        return ResponseEntity.ok(helper.getDestinationDto(destination));
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Destination destination = service.find(id);

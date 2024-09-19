@@ -5,6 +5,7 @@
 
 response-body sample:
 {
+    "id": 1,
     "name": "Mars",
     "celestialBodyType": "Planet",
     "description": "Description of planet Mars",
@@ -15,7 +16,8 @@ response-body sample:
     "mass": 6.39E+23,
     "gravity": 3.71,
     "minimumTemperature": -153,
-    "maximumTemperature": 2E+1
+    "maximumTemperature": 2E+1,
+    "version": 0
 }
 [units => distanceFromEarth: astronomical unit, diameter: km, mass: kg, gravity: ms^-2, temperature: celsius]
 

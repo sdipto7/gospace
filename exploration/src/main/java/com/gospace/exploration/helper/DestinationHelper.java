@@ -19,6 +19,7 @@ public class DestinationHelper {
     public DestinationDto getDestinationDto(Destination destination) {
 
         return DestinationDto.builder()
+                .id(destination.getId())
                 .name(destination.getName())
                 .celestialBodyType(destination.getCelestialBodyType().getLabel())
                 .description(destination.getDescription())
@@ -30,13 +31,14 @@ public class DestinationHelper {
                 .gravity(destination.getGravity().stripTrailingZeros())
                 .minimumTemperature(destination.getMinimumTemperature().stripTrailingZeros())
                 .maximumTemperature(destination.getMaximumTemperature().stripTrailingZeros())
+                .version(destination.getVersion())
                 .build();
     }
 
     public List<DestinationDto> getDestinationDtoList(List<Destination> destinationList) {
 
         return destinationList.stream()
-                .map(destination -> getDestinationDto(destination))
+                .map(this::getDestinationDto)
                 .collect(Collectors.toList());
     }
 }

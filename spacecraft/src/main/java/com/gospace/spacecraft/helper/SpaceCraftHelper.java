@@ -18,18 +18,20 @@ public class SpaceCraftHelper {
     public SpaceCraftDto getSpaceCraftDto(SpaceCraft spaceCraft) {
 
         return SpaceCraftDto.builder()
+                .id(spaceCraft.getId())
                 .name(spaceCraft.getName())
                 .manufacturer(spaceCraft.getManufacturer().getLabel())
                 .manufactureDate(spaceCraft.getManufactureDate())
                 .crewCapacity(spaceCraft.getCrewCapacity())
                 .passengerCapacity(spaceCraft.getPassengerCapacity())
+                .version(spaceCraft.getVersion())
                 .build();
     }
 
     public List<SpaceCraftDto> getSpaceCraftDtoList(List<SpaceCraft> spaceCraftList) {
 
         return spaceCraftList.stream()
-                .map(spaceCraft -> getSpaceCraftDto(spaceCraft))
+                .map(this::getSpaceCraftDto)
                 .collect(toList());
     }
 }

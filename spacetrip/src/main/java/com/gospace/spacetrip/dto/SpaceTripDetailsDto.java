@@ -4,6 +4,7 @@ import com.gospace.spacetrip.proxy.dto.DestinationDto;
 import com.gospace.spacetrip.proxy.dto.SpaceCraftDto;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -15,11 +16,14 @@ import java.time.LocalDateTime;
  * @since 4/7/24
  */
 @Getter
+@Setter
 @Builder
 @ToString
 public class SpaceTripDetailsDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    private int id;
 
     private SpaceCraftDto spaceCraftDto;
 
@@ -36,4 +40,6 @@ public class SpaceTripDetailsDto implements Serializable {
     private int totalSeats;
 
     private int availableSeats;
+
+    private int version;
 }

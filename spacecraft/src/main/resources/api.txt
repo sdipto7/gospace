@@ -6,11 +6,13 @@ SpaceTrip:
 response-body sample:
 /api/spacecraft/{id}
 {
+    "id": 1,
     "name": "Star Voyager",
     "manufacturer": "Space X",
     "manufactureDate": "2021-03-05",
     "crewCapacity": 250,
-    "passengerCapacity": 1600
+    "passengerCapacity": 1600,
+    "version": 0
 }
 
 2. Post Requests:

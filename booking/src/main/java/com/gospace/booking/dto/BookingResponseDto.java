@@ -3,6 +3,7 @@ package com.gospace.booking.dto;
 import com.gospace.booking.proxy.dto.SpaceTripDetailsDto;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serial;
@@ -14,12 +15,15 @@ import java.math.BigDecimal;
  * @since 4/14/24
  */
 @Getter
+@Setter
 @Builder
 @ToString
 public class BookingResponseDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    private int id;
 
     private SpaceTripDetailsDto spaceTripDetailsDto;
 
@@ -36,4 +40,6 @@ public class BookingResponseDto implements Serializable {
     private BigDecimal totalPrice;
 
     private String status; //status will be updated based on payment service later.
+
+    private int version;
 }

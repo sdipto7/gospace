@@ -1,26 +1,25 @@
 package com.gospace.exploration.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-
 /**
  * @author rumidipto
  * @since 3/25/24
  */
 @Getter
+@Setter
 @Builder
 @ToString
 public class DestinationDto implements Serializable {
@@ -28,7 +27,6 @@ public class DestinationDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty(access = WRITE_ONLY)
     private int id;
 
     @NotBlank(message = "{valid.destination.name.notBlank}")
@@ -71,7 +69,6 @@ public class DestinationDto implements Serializable {
     @DecimalMin("-273.15")
     private BigDecimal maximumTemperature;
 
-    @JsonProperty(access = WRITE_ONLY)
     private int version;
 
     @JsonIgnore
