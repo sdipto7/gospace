@@ -1,1 +1,1 @@
-docker run --detach --env MYSQL_USER=admin --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 --env MYSQL_DATABASE=spacetrip_db --name spacetrip_db_container --publish 3306:3306 mysql:8-oracle
+docker run --detach --name spacetrip_mysql_container --env MYSQL_DATABASE=spacetrip_schema --env MYSQL_USER=admin --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 --publish 3306:3306 mysql:8-oracle
