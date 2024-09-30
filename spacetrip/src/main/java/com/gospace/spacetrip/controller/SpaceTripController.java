@@ -81,6 +81,15 @@ public class SpaceTripController {
         return ResponseEntity.ok(nonNull(spaceTrip));
     }
 
+    @GetMapping("/proxy/v1/exists-by-spacecraft/{spaceCraftId}")
+    public ResponseEntity<Boolean> hasSpaceTripBySpaceCraftId(@PathVariable int spaceCraftId) {
+        SpaceTrip spaceTrip = service.findBySpaceCraftId(spaceCraftId);
+
+        log.info("[API:SPACETRIP:PROXY:V1:EXISTS-BY-SPACECRAFT] Spacecraft with ID: {}, spaceTrip: {}", spaceCraftId, spaceTrip);
+
+        return ResponseEntity.ok(nonNull(spaceTrip));
+    }
+
     @GetMapping("/proxy/v1/details/{id}")
     public ResponseEntity<SpaceTripDetailsDto> getSpaceTripDetailsDto(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);

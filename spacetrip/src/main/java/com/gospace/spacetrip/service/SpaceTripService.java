@@ -34,6 +34,12 @@ public class SpaceTripService {
         return optionalSpaceTrip.isPresent() ? optionalSpaceTrip.get() : null;
     }
 
+    public SpaceTrip findBySpaceCraftId(int spaceCraftId) {
+        Optional<SpaceTrip> optionalSpaceTrip = repository.findFirstBySpaceCraftId(spaceCraftId);
+
+        return optionalSpaceTrip.isPresent() ? optionalSpaceTrip.get() : null;
+    }
+
     public List<SpaceTrip> findAvailableSpaceTrips() {
         return repository.findByAvailableSeatsIsGreaterThanEqual(MINIMUM_SEAT_COUNT_FOR_AVAILABLE_TRIP);
     }

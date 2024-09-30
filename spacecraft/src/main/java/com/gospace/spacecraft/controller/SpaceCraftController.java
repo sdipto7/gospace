@@ -3,9 +3,11 @@ package com.gospace.spacecraft.controller;
 import com.gospace.spacecraft.domain.SpaceCraft;
 import com.gospace.spacecraft.dto.SpaceCraftDto;
 import com.gospace.spacecraft.dto.ValidationResponseDto;
+import com.gospace.spacecraft.exception.SpaceCraftCannotBeDeletedException;
 import com.gospace.spacecraft.exception.SpaceCraftNotFoundException;
 import com.gospace.spacecraft.helper.ApiValidationHelper;
 import com.gospace.spacecraft.helper.SpaceCraftHelper;
+import com.gospace.spacecraft.proxy.SpaceTripProxy;
 import com.gospace.spacecraft.service.SpaceCraftService;
 import com.gospace.spacecraft.validator.SpaceCraftValidator;
 import jakarta.validation.Valid;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -40,6 +43,8 @@ public class SpaceCraftController {
     private final SpaceCraftValidator validator;
 
     private final ApiValidationHelper apiValidationHelper;
+
+    private final SpaceTripProxy spaceTripProxy;
 
     private static final Logger log = LoggerFactory.getLogger(SpaceCraftController.class);
 
@@ -147,16 +152,30 @@ public class SpaceCraftController {
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
+        checkIfSpaceCraftIsDeletable(id);
+
         SpaceCraft spaceCraft = service.find(id);
 
+        service.delete(spaceCraft);
+
+        log.info("[API:SPACECRAFT:DELETE] Successfully processed SpaceCraft delete with ID: {}", id);
+    }
+
+    private void checkIfSpaceCraftIsDeletable(int id) {
+        SpaceCraft spaceCraft = service.find(id);
         if (isNull(spaceCraft)) {
             log.info("[API:SPACECRAFT:DELETE] Error while processing SpaceCraft delete with ID: {}", id);
 
             throw new SpaceCraftNotFoundException(String.format("Invalid id! No SpaceCraft found to delete for the id: %d", id));
         }
 
-        service.delete(spaceCraft);
+        Boolean hasSpaceTripBySpaceCraftId = spaceTripProxy.hasSpaceTripBySpaceCraftId(spaceCraft.getId()).getBody();
+        if (TRUE.equals(hasSpaceTripBySpaceCraftId)) {
+            log.info("[API:SPACECRAFT:DELETE] Error while processing SpaceCraft delete with ID: {}", spaceCraft.getId());
 
-        log.info("[API:SPACECRAFT:DELETE] Successfully processed SpaceCraft delete with ID: {}", id);
+            throw new SpaceCraftCannotBeDeletedException(
+                    String.format("Cannot delete the spacecraft with id: %d! There is a scheduled Spacetrip associated with the spacecraft!", spaceCraft.getId())
+            );
+        }
     }
 }
