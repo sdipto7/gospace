@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 @ToString
 public class SpaceTripDetailsDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private int id;

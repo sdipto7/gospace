@@ -1,10 +1,10 @@
 package com.gospace.exploration.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,14 +17,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ErrorResponseDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty("Timestamp")
     private LocalDateTime timestamp;
 
-    @JsonProperty("Error Message")
     private String errorMsg;
 
-    @JsonProperty("Details")
     private String details;
 }

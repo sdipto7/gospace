@@ -5,13 +5,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Objects.requireNonNull;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 /**
  * @author rumidipto
@@ -32,48 +35,65 @@ public class ApiValidationHelper {
 
         setupFieldErrors(validationResponseDto, fieldErrors);
 
+        prepareFormattedErrorMessage(validationResponseDto);
+
         return getResponseEntity(validationResponseDto);
     }
 
-    private void setupGlobalErrors(ValidationResponseDto validationResponseDto,
-                                   List<ObjectError> globalErrors) {
-
+    private void setupGlobalErrors(ValidationResponseDto dto, List<ObjectError> globalErrors) {
         if (!globalErrors.isEmpty()) {
-            validationResponseDto.setGlobalErrorCount(globalErrors.size());
+            dto.setGlobalErrorCount(globalErrors.size());
 
             for (ObjectError ge : globalErrors) {
-                validationResponseDto.addGlobalError(getValidationMessage(ge));
+                dto.addGlobalError(getValidationMessage(ge));
             }
         }
     }
 
-    private void setupFieldErrors(ValidationResponseDto validationResponseDto,
-                                  List<FieldError> fieldErrors) {
-
+    private void setupFieldErrors(ValidationResponseDto dto, List<FieldError> fieldErrors) {
         if (!fieldErrors.isEmpty()) {
-            validationResponseDto.setFieldErrorCount(fieldErrors.size());
+            dto.setFieldErrorCount(fieldErrors.size());
 
             for (FieldError fe : fieldErrors) {
                 String errorMessage = getValidationMessage(fe);
                 String fieldBindPath = fe.getField();
 
-                validationResponseDto.addFieldError(fieldBindPath, errorMessage);
+                dto.addFieldError(fieldBindPath, errorMessage);
             }
         }
     }
 
+    public void prepareFormattedErrorMessage(ValidationResponseDto dto) {
+        StringBuilder sb = new StringBuilder();
+
+        for (String error : dto.getGlobalErrors()) {
+            sb.append(error).append("; ");
+        }
+
+        for (Map.Entry<String, List<String>> entry : dto.getFieldErrors().entrySet()) {
+            String fieldName = entry.getKey();
+            sb.append(fieldName).append(": ");
+
+            for (String error : entry.getValue()) {
+                sb.append(error).append("; ");
+            }
+        }
+
+        dto.setFormattedErrorMessage(sb.toString().trim().replaceAll(";$", ""));
+    }
+
     private String getValidationMessage(ObjectError error) {
         try {
-            return msa.getMessage(error.getCode(), error.getArguments());
+            return msa.getMessage(requireNonNull(error.getCode()), error.getArguments());
         } catch (NoSuchMessageException ex) {
             return error.getDefaultMessage();
         }
     }
 
-    private ResponseEntity<ValidationResponseDto> getResponseEntity(ValidationResponseDto validationResponseDto) {
+    private ResponseEntity<ValidationResponseDto> getResponseEntity(ValidationResponseDto dto) {
         HttpHeaders jsonResponseHeaders = new HttpHeaders();
         jsonResponseHeaders.add("Content-Type", "application/json");
 
-        return new ResponseEntity<>(validationResponseDto, jsonResponseHeaders, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(dto, jsonResponseHeaders, BAD_REQUEST);
     }
 }

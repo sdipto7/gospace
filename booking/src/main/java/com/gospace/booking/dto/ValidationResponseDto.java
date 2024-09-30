@@ -1,10 +1,10 @@
 package com.gospace.booking.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,22 +23,20 @@ import static java.util.Objects.isNull;
 @AllArgsConstructor
 public class ValidationResponseDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty("Timestamp")
     private LocalDateTime timestamp;
 
-    @JsonProperty("Global Error Count")
     private int globalErrorCount;
 
-    @JsonProperty("Field Error Count")
     private int fieldErrorCount;
 
-    @JsonProperty("Global Errors")
     private List<String> globalErrors;
 
-    @JsonProperty("Field Errors")
     private Map<String, List<String>> fieldErrors;
+
+    private String formattedErrorMessage;
 
     public ValidationResponseDto() {
         this.timestamp = LocalDateTime.now();
@@ -59,26 +57,5 @@ public class ValidationResponseDto implements Serializable {
 
         fieldErrorList.add(errorMessage);
         this.fieldErrors.put(fieldName, fieldErrorList);
-    }
-
-    public String getFormattedErrorMessage() {
-        StringBuilder sb = new StringBuilder();
-
-        for (String error : getGlobalErrors()) {
-            sb.append(error).append("; ");
-        }
-
-        for (Map.Entry<String, List<String>> entry : getFieldErrors().entrySet()) {
-            String fieldName = entry.getKey();
-            sb.append(fieldName).append(": ");
-
-            for (String error : entry.getValue()) {
-                sb.append(error).append("; ");
-            }
-        }
-
-        return sb.toString()
-                .trim()
-                .replaceAll(";$", "");
     }
 }

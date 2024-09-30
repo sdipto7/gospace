@@ -23,8 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 import static java.lang.Boolean.TRUE;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
+import static java.util.Objects.*;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -120,7 +119,7 @@ public class DestinationController {
 
         if (errors.hasErrors()) {
             ResponseEntity<ValidationResponseDto> errorResponse = apiValidationHelper.getValidationResponseDto(errors.getGlobalErrors(), errors.getFieldErrors());
-            log.info("[API:DESTINATION:SAVE] Error while processing Destination save, Response: {}", errorResponse.getBody().getFormattedErrorMessage());
+            log.info("[API:DESTINATION:SAVE] Error while processing Destination save, Response: {}", requireNonNull(errorResponse.getBody()).getFormattedErrorMessage());
 
             return errorResponse;
         }
@@ -147,7 +146,7 @@ public class DestinationController {
 
         if (errors.hasErrors()) {
             ResponseEntity<ValidationResponseDto> errorResponse = apiValidationHelper.getValidationResponseDto(errors.getGlobalErrors(), errors.getFieldErrors());
-            log.info("[API:DESTINATION:UPDATE] Error while processing Destination update, Response: {}", errorResponse.getBody().getFormattedErrorMessage());
+            log.info("[API:DESTINATION:UPDATE] Error while processing Destination update, Response: {}", requireNonNull(errorResponse.getBody()).getFormattedErrorMessage());
 
             return errorResponse;
         }

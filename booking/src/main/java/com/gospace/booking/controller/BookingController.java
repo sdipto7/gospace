@@ -25,8 +25,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
+import static java.util.Objects.*;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -111,7 +110,7 @@ public class BookingController {
 
         if (errors.hasErrors()) {
             ResponseEntity<ValidationResponseDto> errorResponse = apiValidationHelper.getValidationResponseDto(errors.getGlobalErrors(), errors.getFieldErrors());
-            log.info("[API:BOOKING:SAVE] Error while processing Booking save, Response: {}", errorResponse.getBody().getFormattedErrorMessage());
+            log.info("[API:BOOKING:SAVE] Error while processing Booking save, Response: {}", requireNonNull(errorResponse.getBody()).getFormattedErrorMessage());
 
             return errorResponse;
         }
@@ -151,7 +150,7 @@ public class BookingController {
 
         if (errors.hasErrors()) {
             ResponseEntity<ValidationResponseDto> errorResponse = apiValidationHelper.getValidationResponseDto(errors.getGlobalErrors(), errors.getFieldErrors());
-            log.info("[API:BOOKING:UPDATE] Error while processing Booking update, Response: {}", errorResponse.getBody().getFormattedErrorMessage());
+            log.info("[API:BOOKING:UPDATE] Error while processing Booking update, Response: {}", requireNonNull(errorResponse.getBody()).getFormattedErrorMessage());
 
             return errorResponse;
         }
