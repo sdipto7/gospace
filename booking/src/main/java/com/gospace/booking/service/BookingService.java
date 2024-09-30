@@ -44,6 +44,12 @@ public class BookingService {
         return optionalBooking.isPresent() ? optionalBooking.get() : null;
     }
 
+    public Booking findBySpaceTripId(int spaceTripId) {
+        Optional<Booking> optionalBooking = repository.findFirstByTripId(spaceTripId);
+
+        return optionalBooking.isPresent() ? optionalBooking.get() : null;
+    }
+
     public List<Booking> findAll() {
         return repository.findAll();
     }

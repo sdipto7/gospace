@@ -29,6 +29,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(SpaceTripCannotBeDeletedException.class)
+    public final ResponseEntity<ErrorResponseDto> handleCannotBeDeletedException(SpaceTripCannotBeDeletedException ex, WebRequest request) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ErrorResponseDto> handleAllException(Exception ex, WebRequest request) {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(

@@ -17,5 +17,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     Optional<Booking> findByReferenceNumberIgnoreCase(String referenceNumber);
 
+    Optional<Booking> findFirstByTripId(int tripId);
+
     List<Booking> findAllByStatus(BookingStatus status);
 }

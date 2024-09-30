@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -72,6 +73,15 @@ public class BookingController {
         }
 
         return ResponseEntity.ok(helper.getBookingResponseDto(booking));
+    }
+
+    @GetMapping("/proxy/v1/exists-by-spacetrip/{spaceTripId}")
+    public ResponseEntity<Boolean> hasBookingBySpaceTripId(@PathVariable int spaceTripId) {
+        Booking booking = service.findBySpaceTripId(spaceTripId);
+
+        log.info("[API:BOOKING:PROXY:V1:EXISTS-BY-SPACETRIP] SpaceTrip with ID: {}, booking: {}", spaceTripId, booking);
+
+        return ResponseEntity.ok(nonNull(booking));
     }
 
     @GetMapping("/all")

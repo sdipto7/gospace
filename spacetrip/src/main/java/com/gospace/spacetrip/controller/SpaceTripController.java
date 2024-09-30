@@ -4,9 +4,11 @@ import com.gospace.spacetrip.domain.SpaceTrip;
 import com.gospace.spacetrip.dto.SpaceTripDetailsDto;
 import com.gospace.spacetrip.dto.SpaceTripDto;
 import com.gospace.spacetrip.dto.ValidationResponseDto;
+import com.gospace.spacetrip.exception.SpaceTripCannotBeDeletedException;
 import com.gospace.spacetrip.exception.SpaceTripNotFoundException;
 import com.gospace.spacetrip.helper.ApiValidationHelper;
 import com.gospace.spacetrip.helper.SpaceTripHelper;
+import com.gospace.spacetrip.proxy.BookingProxy;
 import com.gospace.spacetrip.service.SpaceTripService;
 import com.gospace.spacetrip.validator.SpaceTripValidator;
 import jakarta.validation.Valid;
@@ -22,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -43,6 +46,8 @@ public class SpaceTripController {
     private final SpaceTripValidator validator;
 
     private final ApiValidationHelper apiValidationHelper;
+
+    private final BookingProxy bookingProxy;
 
     private static final Logger log = LoggerFactory.getLogger(SpaceTripController.class);
 
@@ -206,16 +211,30 @@ public class SpaceTripController {
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
+        checkIfSpaceTripIsDeletable(id);
+
         SpaceTrip spaceTrip = service.find(id);
 
+        service.delete(spaceTrip);
+
+        log.info("[API:SPACETRIP:DELETE] Successfully processed SpaceTrip delete with ID: {}", id);
+    }
+
+    private void checkIfSpaceTripIsDeletable(int id) {
+        SpaceTrip spaceTrip = service.find(id);
         if (isNull(spaceTrip)) {
             log.info("[API:SPACETRIP:DELETE] Error while processing SpaceTrip delete with ID: {}", id);
 
             throw new SpaceTripNotFoundException(String.format("Invalid id! No SpaceTrip found to delete for the id: %d", id));
         }
 
-        service.delete(spaceTrip);
+        Boolean hasBookingBySpaceTripId = bookingProxy.hasBookingBySpaceTripId(spaceTrip.getId()).getBody();
+        if (TRUE.equals(hasBookingBySpaceTripId)) {
+            log.info("[API:SPACETRIP:DELETE] Error while processing SpaceTrip delete with ID: {}", spaceTrip.getId());
 
-        log.info("[API:SPACETRIP:DELETE] Successfully processed SpaceTrip delete with ID: {}", id);
+            throw new SpaceTripCannotBeDeletedException(
+                    String.format("Cannot delete the SpaceTrip with id: %d! There are bookings associated with the spacetrip!", spaceTrip.getId())
+            );
+        }
     }
 }
