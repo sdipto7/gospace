@@ -90,6 +90,15 @@ public class SpaceTripController {
         return ResponseEntity.ok(nonNull(spaceTrip));
     }
 
+    @GetMapping("/proxy/v1/exists-by-destination/{destinationId}")
+    public ResponseEntity<Boolean> hasSpaceTripByDestinationId(@PathVariable int destinationId) {
+        SpaceTrip spaceTrip = service.findByDestinationId(destinationId);
+
+        log.info("[API:SPACETRIP:PROXY:V1:EXISTS-BY-DESTINATION] Destination with ID: {}, spaceTrip: {}", destinationId, spaceTrip);
+
+        return ResponseEntity.ok(nonNull(spaceTrip));
+    }
+
     @GetMapping("/proxy/v1/details/{id}")
     public ResponseEntity<SpaceTripDetailsDto> getSpaceTripDetailsDto(@PathVariable int id) {
         SpaceTrip spaceTrip = service.find(id);

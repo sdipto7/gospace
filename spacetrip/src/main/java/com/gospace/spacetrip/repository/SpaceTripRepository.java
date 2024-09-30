@@ -16,5 +16,7 @@ public interface SpaceTripRepository extends JpaRepository<SpaceTrip, Integer> {
 
     Optional<SpaceTrip> findFirstBySpaceCraftId(int spaceCraftId);
 
+    Optional<SpaceTrip> findFirstByDestinationId(int destinationId);
+
     List<SpaceTrip> findByAvailableSeatsIsGreaterThanEqual(int minimumAvailableSeat);
 }

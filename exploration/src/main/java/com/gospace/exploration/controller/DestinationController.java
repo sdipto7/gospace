@@ -4,9 +4,11 @@ import com.gospace.exploration.domain.CelestialBodyType;
 import com.gospace.exploration.domain.Destination;
 import com.gospace.exploration.dto.DestinationDto;
 import com.gospace.exploration.dto.ValidationResponseDto;
+import com.gospace.exploration.exception.DestinationCannotBeDeletedException;
 import com.gospace.exploration.exception.DestinationNotFoundException;
 import com.gospace.exploration.helper.ApiValidationHelper;
 import com.gospace.exploration.helper.DestinationHelper;
+import com.gospace.exploration.proxy.SpaceTripProxy;
 import com.gospace.exploration.service.DestinationService;
 import com.gospace.exploration.validator.DestinationValidator;
 import jakarta.validation.Valid;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -41,6 +44,8 @@ public class DestinationController {
     private final DestinationValidator validator;
 
     private final ApiValidationHelper apiValidationHelper;
+
+    private final SpaceTripProxy spaceTripProxy;
 
     private static final Logger log = LoggerFactory.getLogger(DestinationController.class);
 
@@ -159,16 +164,30 @@ public class DestinationController {
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
+        checkIfDestinationIsDeletable(id);
+
         Destination destination = service.find(id);
 
+        service.delete(destination);
+
+        log.info("[API:DESTINATION:DELETE] Successfully processed Destination delete with ID: {}", id);
+    }
+
+    private void checkIfDestinationIsDeletable(int id) {
+        Destination destination = service.find(id);
         if (isNull(destination)) {
             log.info("[API:DESTINATION:DELETE] Error while processing Destination delete with ID: {}", id);
 
             throw new DestinationNotFoundException(String.format("Invalid id! No Destination found to delete for the id: %d", id));
         }
 
-        service.delete(destination);
+        Boolean hasSpaceTripByDestinationId = spaceTripProxy.hasSpaceTripByDestinationId(destination.getId()).getBody();
+        if (TRUE.equals(hasSpaceTripByDestinationId)) {
+            log.info("[API:DESTINATION:DELETE] Error while processing Destination delete with ID: {}", destination.getId());
 
-        log.info("[API:DESTINATION:DELETE] Successfully processed Destination delete with ID: {}", id);
+            throw new DestinationCannotBeDeletedException(
+                    String.format("Cannot delete the destination with id: %d! There is a scheduled Spacetrip associated with the destination!", destination.getId())
+            );
+        }
     }
 }
