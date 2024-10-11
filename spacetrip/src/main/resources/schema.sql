@@ -1,5 +1,4 @@
-CREATE TABLE space_trip
-(
+CREATE TABLE IF NOT EXISTS space_trip (
     id                     INT            NOT NULL AUTO_INCREMENT,
     version                INT            NOT NULL,
     created                DATETIME       NOT NULL,

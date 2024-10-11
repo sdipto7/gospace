@@ -1,5 +1,6 @@
-SpaceTrip:
-1. Get Requests:
+# SpaceTrip:
+
+## Get Requests:
 /api/spacetrip/{id}
 /api/spacetrip/details/{id}
 /api/spacetrip/available-trips
@@ -19,7 +20,7 @@ response-body sample:
     "version": 0
 }
 
-2. Post Requests:
+## Post Requests:
 /api/spacetrip
 => request-body sample:
 {
@@ -32,7 +33,7 @@ response-body sample:
     "availableSeats": 2600
 }
 
-3. Put Requests:
+## Put Requests:
 /api/spacetrip
 => request-body sample:
 {
@@ -47,5 +48,5 @@ response-body sample:
     "version": 0
 }
 
-4. Delete Requests:
+## Delete Requests:
 /api/spacetrip/{id}

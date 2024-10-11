@@ -1,4 +1,6 @@
-1. Get Requests:
+# Booking:
+
+## Get Requests:
 /api/booking/{id}
 /api/booking?referenceNumber=0a0a-10293-aa
 /api/booking/all
@@ -45,7 +47,7 @@ Response-body sample:
     "version": 0
 }
 
-2. Post Requests:
+## Post Requests:
 /api/booking
 
 Request-body sample:
@@ -57,7 +59,7 @@ Request-body sample:
     "totalSeats": 4
 }
 
-3. Put Requests:
+## Put Requests:
 /api/booking
 
 Request-body sample:
@@ -80,5 +82,5 @@ Request-body sample:
     "totalPrice": 48000000.0000000000
 }
 
-4.Delete Requests:
+## Delete Requests:
 /api/booking/{id}

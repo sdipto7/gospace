@@ -1,5 +1,4 @@
-CREATE TABLE space_craft
-(
+CREATE TABLE IF NOT EXISTS space_craft (
     id                 INT          NOT NULL AUTO_INCREMENT,
     version            INT          NOT NULL,
     created            DATETIME     NOT NULL,

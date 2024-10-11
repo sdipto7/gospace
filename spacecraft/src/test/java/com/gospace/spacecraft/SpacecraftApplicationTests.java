@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Objects.nonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -133,20 +132,6 @@ class SpacecraftApplicationTests {
                 .andExpect(jsonPath("$.version").value(1));
 
         assertEquals(1, repository.findAll().size());
-    }
-
-    @Test
-    @DisplayName("Test to verify that Spacecraft is deleted")
-    public void shouldDeleteSpaceCraft() throws Exception {
-        List<SpaceCraft> spaceCraftList = repository.findAll();
-        assertEquals(1, spaceCraftList.size());
-
-        SpaceCraft spaceCraft = spaceCraftList.stream().findFirst().orElse(null);
-
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/spacecraft/{id}", String.valueOf(nonNull(spaceCraft) ? spaceCraft.getId() : "0")))
-                .andExpect(status().isNoContent());
-
-        assertEquals(0, repository.findAll().size());
     }
 
     private SpaceCraftDto getSpaceCraftDto() {

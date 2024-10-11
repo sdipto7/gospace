@@ -1,5 +1,6 @@
-SpaceTrip:
-1. Get Requests:
+# SpaceCraft:
+
+## Get Requests:
 /api/spacecraft/{id}
 /api/spacecraft/all
 
@@ -15,7 +16,7 @@ response-body sample:
     "version": 0
 }
 
-2. Post Requests:
+## Post Requests:
 /api/spacecraft
 => request-body sample:
 {
@@ -26,7 +27,7 @@ response-body sample:
     "passengerCapacity": 1600
 }
 
-3. Put Requests:
+## Put Requests:
 /api/spacecraft
 => request-body sample:
 {
@@ -39,5 +40,5 @@ response-body sample:
     "version": 2
 }
 
-4. Delete Requests:
+## Delete Requests:
 /api/spacecraft/{id}

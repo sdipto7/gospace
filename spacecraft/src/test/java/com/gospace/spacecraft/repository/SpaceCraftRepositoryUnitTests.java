@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 9/26/24
  */
 @DataJpaTest
+@ActiveProfiles("unit")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SpaceCraftRepositoryUnitTests {
 
