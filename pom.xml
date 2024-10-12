@@ -32,6 +32,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <spring-cloud.version>2023.0.1</spring-cloud.version>
+        <docker.image.prefix>sdipto7</docker.image.prefix>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -60,7 +61,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-image</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <image>
+                        <name>${docker.image.prefix}/gospace-${project.artifactId}:${project.version}</name>
+                    </image>
+                    <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

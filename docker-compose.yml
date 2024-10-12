@@ -1,0 +1,145 @@
+version: '3.8'
+
+services:
+
+  naming-server:
+    image: sdipto7/gospace-naming-server:0.0.1-SNAPSHOT
+    container_name: naming-server
+    ports:
+      - "8761:8761"
+    networks:
+      - gospace-network
+
+  api-gateway:
+    image: sdipto7/gospace-api-gateway:0.0.1-SNAPSHOT
+    container_name: api-gateway
+    ports:
+      - "8765:8765"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - naming-server
+    networks:
+      - gospace-network
+
+  spacetrip-db:
+    image: mysql:8-oracle
+    container_name: spacetrip-db
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=1234
+      - MYSQL_DATABASE=spacetrip_schema
+    ports:
+      - "3306:3306"
+    networks:
+      - gospace-network
+    volumes:
+      - spacetrip-db:/var/lib/mysql
+
+  spacetrip-service:
+    image: sdipto7/gospace-spacetrip:0.0.1-SNAPSHOT
+    container_name: spacetrip-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - spacetrip-db
+      - naming-server
+      - api-gateway
+    networks:
+      - gospace-network
+
+  spacecraft-db:
+    image: mysql:8-oracle
+    container_name: spacecraft-db
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=1234
+      - MYSQL_DATABASE=spacecraft_schema
+    ports:
+      - "3307:3306"
+    networks:
+      - gospace-network
+    volumes:
+      - spacecraft-db:/var/lib/mysql
+
+  spacecraft-service:
+    image: sdipto7/gospace-spacecraft:0.0.1-SNAPSHOT
+    container_name: spacecraft-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8070:8070"
+    depends_on:
+      - spacecraft-db
+      - naming-server
+      - api-gateway
+    networks:
+      - gospace-network
+
+  exploration-db:
+    image: mysql:8-oracle
+    container_name: exploration-db
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=1234
+      - MYSQL_DATABASE=exploration_schema
+    ports:
+      - "3308:3306"
+    networks:
+      - gospace-network
+    volumes:
+      - exploration-db:/var/lib/mysql
+
+  exploration-service:
+    image: sdipto7/gospace-exploration:0.0.1-SNAPSHOT
+    container_name: exploration-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8090:8090"
+    depends_on:
+      - exploration-db
+      - naming-server
+      - api-gateway
+    networks:
+      - gospace-network
+
+  booking-db:
+    image: mysql:8-oracle
+    container_name: booking-db
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=1234
+      - MYSQL_DATABASE=booking_schema
+    ports:
+      - "3309:3306"
+    networks:
+      - gospace-network
+    volumes:
+      - booking-db:/var/lib/mysql
+
+  booking-service:
+    image: sdipto7/gospace-booking:0.0.1-SNAPSHOT
+    container_name: booking-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8100:8100"
+    depends_on:
+      - booking-db
+      - naming-server
+      - api-gateway
+    networks:
+      - gospace-network
+
+networks:
+  gospace-network:
+    driver: bridge
+
+volumes:
+  spacetrip-db:
+  spacecraft-db:
+  exploration-db:
+  booking-db:

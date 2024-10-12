@@ -1,8 +1,16 @@
 # GoSpace - Journey Beyond Limits
 
-#### Welcome to GoSpace, where cosmic adventures await! Discover and book exhilarating space trips to distant celestial destinations effortlessly. Embark on unforgettable journeys to explore the wonders of the universe. With GoSpace, your gateway to the stars, the thrill of space travel is just a click away. Let your imagination soar beyond the cosmos!
+Welcome to GoSpace, where cosmic adventures await! Discover and book exhilarating space trips to distant celestial destinations effortlessly. Embark on unforgettable journeys to explore the wonders of the universe. With GoSpace, your gateway to the stars, the thrill of space travel is just a click away. Let your imagination soar beyond the cosmos!
 
-#### APIs:
+### Run the application anywhere(images are available on dockerhub)
+  - ensure docker is installed in the target environment
+  - use the provided docker-compose.yml file
+  - pull the images and start the containers with:
+```
+docker compose up --detach
+```
+
+### APIs:
 #### Spacecraft Service URLs using API gateway:
 - Get Requests:
   - http://localhost:8765/api/spacecraft/{id}
@@ -64,29 +72,45 @@
 - Delete Request:
   - http://localhost:8765/api/booking/{id}
 
-
-#### To develop/test locally without using the Docker images of the microservices specified in the docker-compose file,
+### Local environment setup for development of this project
   - clone the repository into your local machine
-  - start the mysql containers with the correct database configurations by the given commands - 
+  - ensure docker is installed in your local machine
+  - prior to running the services, ensure that the four required MySQL containers are running, each corresponding to a specific microservice
+  - start the mysql containers with the correct database configurations for each microservice by the following commands - 
 
-#### MySQL Container for SpaceTrip Service
+#### MySQL Container for SpaceTrip Service:
 ```
 docker run --detach --name spacetrip_mysql_container --env MYSQL_DATABASE=spacetrip_schema --env MYSQL_USER=admin --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 --publish 3306:3306 mysql:8-oracle
 ```
 
-#### MySQL Container for Spacecraft Service
+#### MySQL Container for Spacecraft Service:
 ```
 docker run --detach --name spacecraft_mysql_container --env MYSQL_DATABASE=spacecraft_schema --env MYSQL_USER=admin --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 --publish 3307:3306 mysql:8-oracle
 ```
 
-#### MySQL Container for Exploration Service
+#### MySQL Container for Exploration Service:
 ```
 docker run --detach --name exploration_mysql_container --env MYSQL_DATABASE=exploration_schema --env MYSQL_USER=admin --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 --publish 3308:3306 mysql:8-oracle
 ```
 
-#### MySQL Container for Booking Service
+#### MySQL Container for Booking Service:
 ```
 docker run --detach --name booking_mysql_container --env MYSQL_DATABASE=booking_schema --env MYSQL_USER=admin --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 --publish 3309:3306 mysql:8-oracle
 ```
 
-Before running the services, ensure the four required MySQL containers are running, each corresponding to a specific microservice. Once the containers are up, the microservices will connect to their respective databases for proper functionality.
+### Build the images of the microservices
+  - navigate to the parent repository(gospace), where the pom.xml is located, containing the docker image build configuration
+  - build the image using maven plugin with:
+```
+mvn spring-boot:build-image -DskipTests
+```
+
+### Push the docker images
+```
+docker push sdipto7/gospace-spacecraft:0.0.1-SNAPSHOT
+docker push sdipto7/gospace-exploration:0.0.1-SNAPSHOT
+docker push sdipto7/gospace-spacetrip:0.0.1-SNAPSHOT
+docker push sdipto7/gospace-booking:0.0.1-SNAPSHOT
+docker push sdipto7/gospace-api-gateway:0.0.1-SNAPSHOT
+docker push sdipto7/gospace-naming-server:0.0.1-SNAPSHOT
+```
