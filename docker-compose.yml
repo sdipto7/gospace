@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-
   naming-server:
     image: sdipto7/gospace-naming-server:0.0.1-SNAPSHOT
     container_name: naming-server
@@ -28,6 +25,7 @@ services:
     environment:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=1234
       - MYSQL_DATABASE=spacetrip_schema
     ports:
       - "3306:3306"
@@ -35,6 +33,11 @@ services:
       - gospace-network
     volumes:
       - spacetrip-db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uadmin -p1234" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   spacetrip-service:
     image: sdipto7/gospace-spacetrip:0.0.1-SNAPSHOT
@@ -44,9 +47,12 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-      - spacetrip-db
-      - naming-server
-      - api-gateway
+      spacetrip-db:
+        condition: service_healthy
+      naming-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
     networks:
       - gospace-network
 
@@ -56,6 +62,7 @@ services:
     environment:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=1234
       - MYSQL_DATABASE=spacecraft_schema
     ports:
       - "3307:3306"
@@ -63,6 +70,11 @@ services:
       - gospace-network
     volumes:
       - spacecraft-db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uadmin -p1234" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   spacecraft-service:
     image: sdipto7/gospace-spacecraft:0.0.1-SNAPSHOT
@@ -72,9 +84,12 @@ services:
     ports:
       - "8070:8070"
     depends_on:
-      - spacecraft-db
-      - naming-server
-      - api-gateway
+      spacecraft-db:
+        condition: service_healthy
+      naming-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
     networks:
       - gospace-network
 
@@ -84,6 +99,7 @@ services:
     environment:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=1234
       - MYSQL_DATABASE=exploration_schema
     ports:
       - "3308:3306"
@@ -91,6 +107,11 @@ services:
       - gospace-network
     volumes:
       - exploration-db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uadmin -p1234" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   exploration-service:
     image: sdipto7/gospace-exploration:0.0.1-SNAPSHOT
@@ -100,9 +121,12 @@ services:
     ports:
       - "8090:8090"
     depends_on:
-      - exploration-db
-      - naming-server
-      - api-gateway
+      exploration-db:
+        condition: service_healthy
+      naming-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
     networks:
       - gospace-network
 
@@ -112,6 +136,7 @@ services:
     environment:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=1234
       - MYSQL_DATABASE=booking_schema
     ports:
       - "3309:3306"
@@ -119,6 +144,11 @@ services:
       - gospace-network
     volumes:
       - booking-db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uadmin -p1234" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   booking-service:
     image: sdipto7/gospace-booking:0.0.1-SNAPSHOT
@@ -128,9 +158,12 @@ services:
     ports:
       - "8100:8100"
     depends_on:
-      - booking-db
-      - naming-server
-      - api-gateway
+      booking-db:
+        condition: service_healthy
+      naming-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
     networks:
       - gospace-network
 
